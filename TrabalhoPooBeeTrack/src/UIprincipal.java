@@ -2,6 +2,10 @@ import controle.ControleUsuario;
 import controle.ControleApiario;
 import controle.ControleVisita;
 import modelo.Usuario;
+import vizualização.UIapiario;
+import vizualização.UIusuario;
+import vizualização.UIvisita;
+
 import java.util.Scanner;
 
 public class UIprincipal {
@@ -105,6 +109,7 @@ public class UIprincipal {
             System.out.println("1 - Gerenciar Usuários");
             System.out.println("2 - Gerenciar Apiários");
             System.out.println("3 - Gerenciar Visitas");
+            System.out.println("4 - Logout");
             System.out.println("0 - Sair");
             System.out.println("========================================");
             System.out.print("Escolha uma opção: ");
@@ -118,16 +123,24 @@ public class UIprincipal {
                 opcao = -1;
             }
 
-        } while (opcao != 0);
+        } while (opcao != 0 && usuarioLogado != null);
 
-        System.out.println("Sistema encerrado.");
+        if (usuarioLogado == null) {
+            iniciarSistema(); // volta para tela inicial
+        } else {
+            System.out.println("Sistema encerrado.");
+        }
     }
 
     private void processarOpcao(int opcao) {
         switch (opcao) {
             case 1:
-                UIusuario uiUsuario = new UIusuario(scanner, controleUsuario);
-                uiUsuario.exibir();
+                if (usuarioLogado.getTipoUsuario().equalsIgnoreCase("Admin")) {
+                    UIusuario uiUsuario = new UIusuario(scanner, controleUsuario, usuarioLogado);
+                    uiUsuario.exibir();
+                } else {
+                    System.out.println("Acesso negado. Apenas administradores podem gerenciar usuários.");
+                }
                 break;
             case 2:
                 UIapiario uiApiario = new UIapiario(scanner, controleApiario);
@@ -136,6 +149,10 @@ public class UIprincipal {
             case 3:
                 UIvisita uiVisita = new UIvisita(scanner, controleVisita, controleApiario);
                 uiVisita.exibir();
+                break;
+            case 4:
+                System.out.println("Logout realizado. Até logo, " + usuarioLogado.getNome() + "!");
+                usuarioLogado = null;
                 break;
             case 0:
                 break;

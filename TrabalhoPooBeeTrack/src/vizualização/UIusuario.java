@@ -8,10 +8,12 @@ import java.util.Scanner;
 public class UIusuario {
     private Scanner scanner;
     private ControleUsuario controle;
+    private Usuario usuarioLogado; // quem está usando o sistema
 
-    public UIusuario(Scanner scanner, ControleUsuario controle) {
+    public UIusuario(Scanner scanner, ControleUsuario controle, Usuario usuarioLogado) {
         this.scanner = scanner;
         this.controle = controle;
+        this.usuarioLogado = usuarioLogado;
     }
 
     public void exibir() {
@@ -21,11 +23,19 @@ public class UIusuario {
             System.out.println("\n========================================");
             System.out.println("      GERENCIAMENTO DE USUÁRIOS");
             System.out.println("========================================");
-            System.out.println("1 - Cadastrar Usuário");
-            System.out.println("2 - Listar Usuários");
-            System.out.println("3 - Buscar Usuário por Email");
-            System.out.println("4 - Atualizar Usuário");
-            System.out.println("5 - Remover Usuário");
+
+            // Menu diferente para Admin e Apicultor
+            if (usuarioLogado.getTipoUsuario().equalsIgnoreCase("Admin")) {
+                System.out.println("1 - Cadastrar Usuário");
+                System.out.println("2 - Listar Usuários");
+                System.out.println("3 - Buscar Usuário por Email");
+                System.out.println("4 - Atualizar Usuário");
+                System.out.println("5 - Remover Usuário");
+            } else {
+                System.out.println("2 - Listar Usuários");
+                System.out.println("3 - Buscar Usuário por Email");
+            }
+
             System.out.println("0 - Voltar");
             System.out.println("========================================");
             System.out.print("Escolha uma opção: ");
@@ -43,12 +53,23 @@ public class UIusuario {
     }
 
     private void processarOpcao(int opcao) {
+        boolean admin = usuarioLogado.getTipoUsuario().equalsIgnoreCase("Admin");
+
         switch (opcao) {
-            case 1: cadastrar(); break;
+            case 1:
+                if (admin) cadastrar();
+                else System.out.println("Acesso negado. Apenas administradores podem cadastrar usuários.");
+                break;
             case 2: listar(); break;
             case 3: buscar(); break;
-            case 4: atualizar(); break;
-            case 5: remover(); break;
+            case 4:
+                if (admin) atualizar();
+                else System.out.println("Acesso negado. Apenas administradores podem atualizar usuários.");
+                break;
+            case 5:
+                if (admin) remover();
+                else System.out.println("Acesso negado. Apenas administradores podem remover usuários.");
+                break;
             case 0: break;
             default: System.out.println("Opção inválida.");
         }
@@ -156,6 +177,12 @@ public class UIusuario {
         System.out.println("Nome: " + u.getNome());
         System.out.println("Email: " + u.getEmail());
         System.out.println("Tipo: " + u.getTipoUsuario());
+
+        // Apenas Admin pode ver senha
+        if (usuarioLogado.getTipoUsuario().equalsIgnoreCase("Admin")) {
+            System.out.println("Senha: " + u.getSenha());
+        }
+
         System.out.println("----------------------------------------");
     }
 }
