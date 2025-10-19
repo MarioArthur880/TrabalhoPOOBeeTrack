@@ -1,11 +1,13 @@
-package vizualização;
-
 import controle.ControleUsuario;
 import controle.ControleApiario;
 import controle.ControleVisita;
+import vizualização.UIapiario;
+import vizualização.UIusuario;
+import vizualização.UIvisita;
+
 import java.util.Scanner;
 
-public class UIprincipal {
+public class Principal {
     private Scanner scanner = new Scanner(System.in);
     private ControleUsuario controleUsuario = new ControleUsuario();
     private ControleApiario controleApiario = new ControleApiario();
@@ -62,7 +64,7 @@ public class UIprincipal {
     }
 
     public static void main(String[] args) {
-        UIprincipal principal = new UIprincipal();
+        Principal principal = new Principal();
         principal.exibirMenuPrincipal();
     }
 }
