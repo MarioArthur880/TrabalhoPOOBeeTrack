@@ -6,9 +6,8 @@ import java.util.List;
 
 public class ControleApiario {
     private List<Apiario> listaApiarios = new ArrayList<>();
-    private int proximoId = 1; // contador de ID automático
+    private int proximoId = 1;
 
-    // Cria e adiciona um novo apiário com ID gerado automaticamente
     public boolean criarApiario(String nome, String raca, String local, int qntCaixas) {
         Apiario novo = Apiario.criarApiario(proximoId, nome, raca, local, qntCaixas);
         if (novo != null) {
@@ -19,12 +18,10 @@ public class ControleApiario {
         return false;
     }
 
-    // Retorna a lista completa de apiários
     public List<Apiario> listar() {
         return new ArrayList<>(listaApiarios);
     }
 
-    // Busca um apiário pelo ID
     public Apiario buscarPorId(int id) {
         for (Apiario a : listaApiarios) {
             if (a.getId() == id) {
@@ -34,7 +31,6 @@ public class ControleApiario {
         return null;
     }
 
-    // Remove um apiário pelo ID
     public boolean remover(int id) {
         Apiario a = buscarPorId(id);
         if (a != null) {
@@ -43,7 +39,6 @@ public class ControleApiario {
         return false;
     }
 
-    // Atualiza um apiário existente com base no ID
     public boolean atualizar(Apiario novoApiario) {
         if (novoApiario == null) return false;
 
@@ -56,7 +51,6 @@ public class ControleApiario {
         return false;
     }
 
-    // Retorna todos os apiários de um determinado local
     public List<Apiario> listarPorLocal(String local) {
         List<Apiario> resultado = new ArrayList<>();
         if (local == null || local.trim().isEmpty()) return resultado;

@@ -8,9 +8,8 @@ public class ControleUsuario {
     private List<Usuario> listaUsuarios = new ArrayList<>();
     private int proximoId = 1;
 
-    // Cria e adiciona um novo usuário com ID automático
     public boolean criarUsuario(String nome, String email, String senha, String tipoUsuario) {
-        if (buscarPorEmail(email) != null) return false; // evita duplicidade
+        if (buscarPorEmail(email) != null) return false;
 
         Usuario novo = Usuario.criarUsuario(proximoId, nome, email, senha, tipoUsuario);
         if (novo != null) {
@@ -21,12 +20,10 @@ public class ControleUsuario {
         return false;
     }
 
-    // Retorna a lista completa de usuários
     public List<Usuario> listar() {
         return new ArrayList<>(listaUsuarios);
     }
 
-    // Busca um usuário pelo e-mail
     public Usuario buscarPorEmail(String email) {
         if (email == null || email.trim().isEmpty()) return null;
 
@@ -38,7 +35,6 @@ public class ControleUsuario {
         return null;
     }
 
-    // Busca um usuário pelo nome
     public Usuario buscarPorNome(String nome) {
         if (nome == null || nome.trim().isEmpty()) return null;
 
@@ -50,7 +46,6 @@ public class ControleUsuario {
         return null;
     }
 
-    // Remove um usuário pelo e-mail
     public boolean remover(String email) {
         Usuario u = buscarPorEmail(email);
         if (u != null) {
@@ -59,7 +54,6 @@ public class ControleUsuario {
         return false;
     }
 
-    // Atualiza um usuário existente com base no e-mail
     public boolean atualizar(Usuario novoUsuario) {
         if (novoUsuario == null || novoUsuario.getEmail() == null) return false;
 
@@ -72,7 +66,6 @@ public class ControleUsuario {
         return false;
     }
 
-    // Retorna todos os usuários de um determinado tipo
     public List<Usuario> listarPorTipo(String tipoUsuario) {
         List<Usuario> resultado = new ArrayList<>();
         if (tipoUsuario == null || tipoUsuario.trim().isEmpty()) return resultado;

@@ -7,7 +7,6 @@ public class Apiario {
     private String local;
     private int qntCaixas;
 
-    // Construtor principal
     public Apiario(int id, String nome, String raca, String local, int qntCaixas) {
         this.id = id;
         this.nome = nome;
@@ -16,7 +15,6 @@ public class Apiario {
         this.qntCaixas = qntCaixas;
     }
 
-    // Construtor de cópia
     public Apiario(Apiario outro) {
         this.id = outro.id;
         this.nome = outro.nome;
@@ -25,7 +23,6 @@ public class Apiario {
         this.qntCaixas = outro.qntCaixas;
     }
 
-    // Método fábrica com validações básicas
     public static Apiario criarApiario(int id, String nome, String raca, String local, int qntCaixas) {
         if (id <= 0 || nome == null || nome.trim().isEmpty() ||
             raca == null || raca.trim().isEmpty() ||
@@ -37,7 +34,6 @@ public class Apiario {
         return new Apiario(id, nome, raca, local, qntCaixas);
     }
 
-    // Getters
     public int getId() {
         return id;
     }
@@ -58,7 +54,6 @@ public class Apiario {
         return qntCaixas;
     }
 
-    // Setters
     public void setId(int id) {
         this.id = id;
     }

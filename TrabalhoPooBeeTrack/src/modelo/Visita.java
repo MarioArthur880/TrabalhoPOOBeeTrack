@@ -7,7 +7,6 @@ public class Visita {
     private int colheita;
     private String tipoVisita;
 
-    // Construtor principal
     public Visita(int id, String data, Apiario apiario, int colheita, String tipoVisita) {
         this.id = id;
         this.data = data;
@@ -16,7 +15,6 @@ public class Visita {
         this.tipoVisita = tipoVisita;
     }
 
-    // Construtor de cópia
     public Visita(Visita outra) {
         this.id = outra.id;
         this.data = outra.data;
@@ -25,7 +23,6 @@ public class Visita {
         this.tipoVisita = outra.tipoVisita;
     }
 
-    // Método fábrica com validações básicas
     public static Visita criarVisita(int id, String data, Apiario apiario, int colheita, String tipoVisita) {
         if (id <= 0 || data == null || data.trim().isEmpty() ||
             apiario == null || colheita < 0 ||
@@ -36,7 +33,6 @@ public class Visita {
         return new Visita(id, data, apiario, colheita, tipoVisita);
     }
 
-    // Getters
     public int getId() {
         return id;
     }
@@ -57,7 +53,6 @@ public class Visita {
         return tipoVisita;
     }
 
-    // Setters
     public void setId(int id) {
         this.id = id;
     }

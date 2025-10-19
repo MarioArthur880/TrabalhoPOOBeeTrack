@@ -126,7 +126,7 @@ public class UIprincipal {
         } while (opcao != 0 && usuarioLogado != null);
 
         if (usuarioLogado == null) {
-            iniciarSistema(); // volta para tela inicial
+            iniciarSistema();
         } else {
             System.out.println("Sistema encerrado.");
         }

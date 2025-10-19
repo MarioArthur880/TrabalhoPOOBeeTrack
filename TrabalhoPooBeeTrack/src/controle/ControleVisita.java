@@ -8,7 +8,6 @@ public class ControleVisita {
     private List<Visita> listaVisitas = new ArrayList<>();
     private int proximoId = 1;
 
-    // Cria e adiciona uma nova visita com ID gerado automaticamente
     public boolean criarVisita(String data, Apiario apiario, int colheita, String tipoVisita) {
         Visita nova = Visita.criarVisita(proximoId, data, apiario, colheita, tipoVisita);
         if (nova != null) {
@@ -19,17 +18,14 @@ public class ControleVisita {
         return false;
     }
 
-    // Retorna a lista completa de visitas
     public List<Visita> listar() {
         return new ArrayList<>(listaVisitas);
     }
 
-    // Remove uma visita pelo ID
     public boolean remover(int id) {
         return listaVisitas.removeIf(v -> v.getId() == id);
     }
 
-    // Busca uma visita pelo ID
     public Visita buscarPorId(int id) {
         for (Visita v : listaVisitas) {
             if (v.getId() == id) {
@@ -39,7 +35,6 @@ public class ControleVisita {
         return null;
     }
 
-    // Atualiza uma visita existente com base no ID
     public boolean atualizar(Visita novaVisita) {
         if (novaVisita == null) return false;
 
@@ -52,7 +47,6 @@ public class ControleVisita {
         return false;
     }
 
-    // Retorna todas as visitas de um apiário específico
     public List<Visita> listarPorApiario(Apiario apiario) {
         List<Visita> resultado = new ArrayList<>();
         if (apiario == null) return resultado;

@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class UIusuario {
     private Scanner scanner;
     private ControleUsuario controle;
-    private Usuario usuarioLogado; // quem está usando o sistema
+    private Usuario usuarioLogado; 
 
     public UIusuario(Scanner scanner, ControleUsuario controle, Usuario usuarioLogado) {
         this.scanner = scanner;
@@ -24,7 +24,6 @@ public class UIusuario {
             System.out.println("      GERENCIAMENTO DE USUÁRIOS");
             System.out.println("========================================");
 
-            // Menu diferente para Admin e Apicultor
             if (usuarioLogado.getTipoUsuario().equalsIgnoreCase("Admin")) {
                 System.out.println("1 - Cadastrar Usuário");
                 System.out.println("2 - Listar Usuários");
@@ -178,7 +177,6 @@ public class UIusuario {
         System.out.println("Email: " + u.getEmail());
         System.out.println("Tipo: " + u.getTipoUsuario());
 
-        // Apenas Admin pode ver senha
         if (usuarioLogado.getTipoUsuario().equalsIgnoreCase("Admin")) {
             System.out.println("Senha: " + u.getSenha());
         }
