@@ -57,9 +57,6 @@ public class UIapiario {
     private void cadastrar() {
         System.out.println("\n--- CADASTRAR APIÁRIO ---");
 
-        System.out.print("ID: ");
-        int id = Integer.parseInt(scanner.nextLine());
-
         System.out.print("Nome: ");
         String nome = scanner.nextLine();
 
@@ -72,10 +69,9 @@ public class UIapiario {
         System.out.print("Quantidade de caixas: ");
         int qntCaixas = Integer.parseInt(scanner.nextLine());
 
-        Apiario apiario = Apiario.criarApiario(id, nome, raca, local, qntCaixas);
+        boolean sucesso = controle.criarApiario(nome, raca, local, qntCaixas);
 
-        if (apiario != null) {
-            controle.adicionar(apiario);
+        if (sucesso) {
             System.out.println("Apiário cadastrado com sucesso.");
         } else {
             System.out.println("Dados inválidos. Apiário não cadastrado.");

@@ -61,9 +61,6 @@ public class UIvisita {
     private void registrar() {
         System.out.println("\n--- REGISTRAR VISITA ---");
 
-        System.out.print("ID da visita: ");
-        int id = Integer.parseInt(scanner.nextLine());
-
         System.out.print("Data (ex: 19/10/2025): ");
         String data = scanner.nextLine();
 
@@ -82,10 +79,9 @@ public class UIvisita {
         System.out.print("Tipo de visita (ex: inspeção, colheita): ");
         String tipoVisita = scanner.nextLine();
 
-        Visita visita = Visita.criarVisita(id, data, apiario, colheita, tipoVisita);
+        boolean sucesso = controleVisita.criarVisita(data, apiario, colheita, tipoVisita);
 
-        if (visita != null) {
-            controleVisita.adicionar(visita);
+        if (sucesso) {
             System.out.println("Visita registrada com sucesso.");
         } else {
             System.out.println("Dados inválidos. Visita não registrada.");

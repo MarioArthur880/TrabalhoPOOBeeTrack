@@ -6,17 +6,22 @@ import java.util.List;
 
 public class ControleApiario {
     private List<Apiario> listaApiarios = new ArrayList<>();
+    private int proximoId = 1; // contador de ID automático
 
-    // Adiciona um novo apiário à lista
-    public void adicionar(Apiario a) {
-        if (a != null) {
-            listaApiarios.add(a);
+    // Cria e adiciona um novo apiário com ID gerado automaticamente
+    public boolean criarApiario(String nome, String raca, String local, int qntCaixas) {
+        Apiario novo = Apiario.criarApiario(proximoId, nome, raca, local, qntCaixas);
+        if (novo != null) {
+            listaApiarios.add(novo);
+            proximoId++;
+            return true;
         }
+        return false;
     }
 
     // Retorna a lista completa de apiários
     public List<Apiario> listar() {
-        return new ArrayList<>(listaApiarios); // proteção contra modificações externas
+        return new ArrayList<>(listaApiarios);
     }
 
     // Busca um apiário pelo ID

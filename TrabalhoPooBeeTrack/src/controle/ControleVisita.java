@@ -6,17 +6,22 @@ import java.util.List;
 
 public class ControleVisita {
     private List<Visita> listaVisitas = new ArrayList<>();
+    private int proximoId = 1;
 
-    // Adiciona uma nova visita à lista
-    public void adicionar(Visita v) {
-        if (v != null) {
-            listaVisitas.add(v);
+    // Cria e adiciona uma nova visita com ID gerado automaticamente
+    public boolean criarVisita(String data, Apiario apiario, int colheita, String tipoVisita) {
+        Visita nova = Visita.criarVisita(proximoId, data, apiario, colheita, tipoVisita);
+        if (nova != null) {
+            listaVisitas.add(nova);
+            proximoId++;
+            return true;
         }
+        return false;
     }
 
     // Retorna a lista completa de visitas
     public List<Visita> listar() {
-        return new ArrayList<>(listaVisitas); // proteção contra modificações externas
+        return new ArrayList<>(listaVisitas);
     }
 
     // Remove uma visita pelo ID

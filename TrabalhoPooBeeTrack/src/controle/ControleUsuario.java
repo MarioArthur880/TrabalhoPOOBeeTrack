@@ -6,12 +6,19 @@ import java.util.List;
 
 public class ControleUsuario {
     private List<Usuario> listaUsuarios = new ArrayList<>();
+    private int proximoId = 1;
 
-    // Adiciona um novo usuário à lista
-    public void adicionar(Usuario u) {
-        if (u != null) {
-            listaUsuarios.add(u);
+    // Cria e adiciona um novo usuário com ID automático
+    public boolean criarUsuario(String nome, String email, String senha, String tipoUsuario) {
+        if (buscarPorEmail(email) != null) return false; // evita duplicidade
+
+        Usuario novo = Usuario.criarUsuario(proximoId, nome, email, senha, tipoUsuario);
+        if (novo != null) {
+            listaUsuarios.add(novo);
+            proximoId++;
+            return true;
         }
+        return false;
     }
 
     // Retorna a lista completa de usuários
