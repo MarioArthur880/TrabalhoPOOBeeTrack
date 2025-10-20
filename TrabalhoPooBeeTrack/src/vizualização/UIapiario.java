@@ -23,9 +23,8 @@ public class UIapiario {
             System.out.println("========================================");
             System.out.println("1 - Cadastrar Apiário");
             System.out.println("2 - Listar Apiários");
-            System.out.println("3 - Buscar Apiário por ID");
-            System.out.println("4 - Atualizar Apiário");
-            System.out.println("5 - Remover Apiário");
+            System.out.println("3 - Atualizar Apiário");
+            System.out.println("4 - Remover Apiário");
             System.out.println("0 - Voltar");
             System.out.println("========================================");
             System.out.print("Escolha uma opção: ");
@@ -46,9 +45,8 @@ public class UIapiario {
         switch (opcao) {
             case 1: cadastrar(); break;
             case 2: listar(); break;
-            case 3: buscar(); break;
-            case 4: atualizar(); break;
-            case 5: remover(); break;
+            case 3: atualizar(); break;
+            case 4: remover(); break;
             case 0: break;
             default: System.out.println("Opção inválida.");
         }
@@ -85,23 +83,12 @@ public class UIapiario {
         if (apiarios.isEmpty()) {
             System.out.println("Nenhum apiário cadastrado.");
         } else {
+            System.out.printf("%-5s %-20s %-15s %-20s %-10s%n", "ID", "Nome", "Raça", "Local", "Caixas");
+            System.out.println("--------------------------------------------------------------------------");
             for (Apiario a : apiarios) {
-                exibirApiario(a);
+                System.out.printf("%-5d %-20s %-15s %-20s %-10d%n",
+                        a.getId(), a.getNome(), a.getRaca(), a.getLocal(), a.getQntCaixas());
             }
-        }
-    }
-
-    private void buscar() {
-        System.out.println("\n--- BUSCAR APIÁRIO ---");
-        System.out.print("ID: ");
-        int id = Integer.parseInt(scanner.nextLine());
-
-        Apiario apiario = controle.buscarPorId(id);
-
-        if (apiario != null) {
-            exibirApiario(apiario);
-        } else {
-            System.out.println("Apiário não encontrado.");
         }
     }
 
@@ -155,15 +142,5 @@ public class UIapiario {
         } else {
             System.out.println("Apiário não encontrado.");
         }
-    }
-
-    private void exibirApiario(Apiario a) {
-        System.out.println("\n----------------------------------------");
-        System.out.println("ID: " + a.getId());
-        System.out.println("Nome: " + a.getNome());
-        System.out.println("Raça: " + a.getRaca());
-        System.out.println("Local: " + a.getLocal());
-        System.out.println("Caixas: " + a.getQntCaixas());
-        System.out.println("----------------------------------------");
     }
 }

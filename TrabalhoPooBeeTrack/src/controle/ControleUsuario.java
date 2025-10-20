@@ -9,16 +9,22 @@ public class ControleUsuario {
     private int proximoId = 1;
 
     public boolean criarUsuario(String nome, String email, String senha, String tipoUsuario) {
-        if (buscarPorEmail(email) != null) return false;
+    if (buscarPorEmail(email) != null) return false;
 
-        Usuario novo = Usuario.criarUsuario(proximoId, nome, email, senha, tipoUsuario);
-        if (novo != null) {
-            listaUsuarios.add(novo);
-            proximoId++;
-            return true;
-        }
-        return false;
+    // Se for o primeiro usuário, força o tipo para "Admin"
+    if (listaUsuarios.isEmpty()) {
+        tipoUsuario = "Admin";
     }
+
+    Usuario novo = Usuario.criarUsuario(proximoId, nome, email, senha, tipoUsuario);
+    if (novo != null) {
+        listaUsuarios.add(novo);
+        proximoId++;
+        return true;
+    }
+    return false;
+}
+
 
     public List<Usuario> listar() {
         return new ArrayList<>(listaUsuarios);

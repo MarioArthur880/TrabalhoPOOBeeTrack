@@ -27,9 +27,8 @@ public class UIvisita {
             System.out.println("========================================");
             System.out.println("1 - Registrar Visita");
             System.out.println("2 - Listar Visitas");
-            System.out.println("3 - Buscar Visita por ID");
-            System.out.println("4 - Atualizar Visita");
-            System.out.println("5 - Remover Visita");
+            System.out.println("3 - Atualizar Visita");
+            System.out.println("4 - Remover Visita");
             System.out.println("0 - Voltar");
             System.out.println("========================================");
             System.out.print("Escolha uma opção: ");
@@ -50,9 +49,8 @@ public class UIvisita {
         switch (opcao) {
             case 1: registrar(); break;
             case 2: listar(); break;
-            case 3: buscar(); break;
-            case 4: atualizar(); break;
-            case 5: remover(); break;
+            case 3: atualizar(); break;
+            case 4: remover(); break;
             case 0: break;
             default: System.out.println("Opção inválida.");
         }
@@ -73,7 +71,7 @@ public class UIvisita {
             return;
         }
 
-        System.out.print("Quantidade colhida (em kg): ");
+        System.out.print("Quantidade colhida (número de melgueiras): ");
         int colheita = Integer.parseInt(scanner.nextLine());
 
         System.out.print("Tipo de visita (ex: inspeção, colheita): ");
@@ -95,23 +93,13 @@ public class UIvisita {
         if (visitas.isEmpty()) {
             System.out.println("Nenhuma visita registrada.");
         } else {
+            System.out.printf("%-5s %-12s %-20s %-10s %-15s%n", "ID", "Data", "Apiário", "Colheita", "Tipo");
+            System.out.println("--------------------------------------------------------------------------");
             for (Visita v : visitas) {
-                exibirVisita(v);
+                String nomeApiario = v.getApiario() != null ? v.getApiario().getNome() : "N/A";
+                System.out.printf("%-5d %-12s %-20s %-10d %-15s%n",
+                        v.getId(), v.getData(), nomeApiario, v.getColheita(), v.getTipoVisita());
             }
-        }
-    }
-
-    private void buscar() {
-        System.out.println("\n--- BUSCAR VISITA ---");
-        System.out.print("ID da visita: ");
-        int id = Integer.parseInt(scanner.nextLine());
-
-        Visita visita = controleVisita.buscarPorId(id);
-
-        if (visita != null) {
-            exibirVisita(visita);
-        } else {
-            System.out.println("Visita não encontrada.");
         }
     }
 
@@ -171,15 +159,5 @@ public class UIvisita {
         } else {
             System.out.println("Visita não encontrada.");
         }
-    }
-
-    private void exibirVisita(Visita v) {
-        System.out.println("\n----------------------------------------");
-        System.out.println("ID: " + v.getId());
-        System.out.println("Data: " + v.getData());
-        System.out.println("Apiário: " + (v.getApiario() != null ? v.getApiario().getNome() : "N/A"));
-        System.out.println("Colheita: " + v.getColheita() + " kg");
-        System.out.println("Tipo: " + v.getTipoVisita());
-        System.out.println("----------------------------------------");
     }
 }

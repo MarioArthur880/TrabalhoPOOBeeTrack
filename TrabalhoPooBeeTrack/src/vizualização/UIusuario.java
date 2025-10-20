@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class UIusuario {
     private Scanner scanner;
     private ControleUsuario controle;
-    private Usuario usuarioLogado; 
+    private Usuario usuarioLogado;
 
     public UIusuario(Scanner scanner, ControleUsuario controle, Usuario usuarioLogado) {
         this.scanner = scanner;
@@ -27,12 +27,10 @@ public class UIusuario {
             if (usuarioLogado.getTipoUsuario().equalsIgnoreCase("Admin")) {
                 System.out.println("1 - Cadastrar Usuário");
                 System.out.println("2 - Listar Usuários");
-                System.out.println("3 - Buscar Usuário por Email");
-                System.out.println("4 - Atualizar Usuário");
-                System.out.println("5 - Remover Usuário");
+                System.out.println("3 - Atualizar Usuário");
+                System.out.println("4 - Remover Usuário");
             } else {
                 System.out.println("2 - Listar Usuários");
-                System.out.println("3 - Buscar Usuário por Email");
             }
 
             System.out.println("0 - Voltar");
@@ -60,12 +58,11 @@ public class UIusuario {
                 else System.out.println("Acesso negado. Apenas administradores podem cadastrar usuários.");
                 break;
             case 2: listar(); break;
-            case 3: buscar(); break;
-            case 4:
+            case 3:
                 if (admin) atualizar();
                 else System.out.println("Acesso negado. Apenas administradores podem atualizar usuários.");
                 break;
-            case 5:
+            case 4:
                 if (admin) remover();
                 else System.out.println("Acesso negado. Apenas administradores podem remover usuários.");
                 break;
@@ -74,29 +71,37 @@ public class UIusuario {
         }
     }
 
-    private void cadastrar() {
-        System.out.println("\n--- CADASTRAR USUÁRIO ---");
+  private void cadastrar() {
+    System.out.println("\n--- CADASTRAR USUÁRIO ---");
 
-        System.out.print("Nome: ");
-        String nome = scanner.nextLine();
+    System.out.print("Nome: ");
+    String nome = scanner.nextLine();
 
-        System.out.print("Email: ");
-        String email = scanner.nextLine();
+    System.out.print("Email: ");
+    String email = scanner.nextLine();
 
-        System.out.print("Senha: ");
-        String senha = scanner.nextLine();
+    System.out.print("Senha: ");
+    String senha = scanner.nextLine();
 
-        System.out.print("Tipo de Usuário (Admin/Apicultor): ");
-        String tipoUsuario = scanner.nextLine();
+    System.out.print("Tipo de Usuário (Admin/Apicultor): ");
+    String tipoUsuario = scanner.nextLine();
 
-        boolean sucesso = controle.criarUsuario(nome, email, senha, tipoUsuario);
+    boolean sucesso = controle.criarUsuario(nome, email, senha, tipoUsuario);
 
-        if (sucesso) {
-            System.out.println("Usuário cadastrado com sucesso.");
+    if (sucesso) {
+        Usuario novo = controle.buscarPorEmail(email);
+        if (novo != null && novo.getTipoUsuario().equalsIgnoreCase("Admin") && controle.listar().size() == 1) {
+            System.out.println("Este é o primeiro usuário do sistema e foi cadastrado como Administrador.");
         } else {
-            System.out.println("Dados inválidos ou e-mail já cadastrado.");
+            System.out.println("Usuário cadastrado com sucesso.");
         }
+    } else {
+        System.out.println("Dados inválidos ou e-mail já cadastrado.");
     }
+}
+
+
+
 
     private void listar() {
         System.out.println("\n--- LISTA DE USUÁRIOS ---");
@@ -105,23 +110,21 @@ public class UIusuario {
         if (usuarios.isEmpty()) {
             System.out.println("Nenhum usuário cadastrado.");
         } else {
-            for (Usuario u : usuarios) {
-                exibirUsuario(u);
+            if (usuarioLogado.getTipoUsuario().equalsIgnoreCase("Admin")) {
+                System.out.printf("%-5s %-20s %-25s %-15s %-15s%n", "ID", "Nome", "Email", "Tipo", "Senha");
+                System.out.println("-------------------------------------------------------------------------------");
+                for (Usuario u : usuarios) {
+                    System.out.printf("%-5d %-20s %-25s %-15s %-15s%n",
+                            u.getId(), u.getNome(), u.getEmail(), u.getTipoUsuario(), u.getSenha());
+                }
+            } else {
+                System.out.printf("%-5s %-20s %-25s %-15s%n", "ID", "Nome", "Email", "Tipo");
+                System.out.println("---------------------------------------------------------------");
+                for (Usuario u : usuarios) {
+                    System.out.printf("%-5d %-20s %-25s %-15s%n",
+                            u.getId(), u.getNome(), u.getEmail(), u.getTipoUsuario());
+                }
             }
-        }
-    }
-
-    private void buscar() {
-        System.out.println("\n--- BUSCAR USUÁRIO ---");
-        System.out.print("Email: ");
-        String email = scanner.nextLine();
-
-        Usuario usuario = controle.buscarPorEmail(email);
-
-        if (usuario != null) {
-            exibirUsuario(usuario);
-        } else {
-            System.out.println("Usuário não encontrado.");
         }
     }
 
@@ -168,19 +171,5 @@ public class UIusuario {
         } else {
             System.out.println("Usuário não encontrado.");
         }
-    }
-
-    private void exibirUsuario(Usuario u) {
-        System.out.println("\n----------------------------------------");
-        System.out.println("ID: " + u.getId());
-        System.out.println("Nome: " + u.getNome());
-        System.out.println("Email: " + u.getEmail());
-        System.out.println("Tipo: " + u.getTipoUsuario());
-
-        if (usuarioLogado.getTipoUsuario().equalsIgnoreCase("Admin")) {
-            System.out.println("Senha: " + u.getSenha());
-        }
-
-        System.out.println("----------------------------------------");
     }
 }

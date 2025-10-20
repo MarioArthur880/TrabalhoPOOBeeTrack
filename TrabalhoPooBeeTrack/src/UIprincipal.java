@@ -18,6 +18,7 @@ public class UIprincipal {
     public static void main(String[] args) {
         UIprincipal principal = new UIprincipal();
         principal.iniciarSistema();
+        principal.scanner.close(); // fechamento seguro após uso
     }
 
     public void iniciarSistema() {
@@ -30,31 +31,40 @@ public class UIprincipal {
         }
 
         exibirMenuPrincipal();
-        scanner.close();
     }
 
     private void exibirTelaInicial() {
-        System.out.println("\n1 - Fazer login");
-        System.out.println("2 - Cadastrar novo usuário");
-        System.out.println("0 - Sair");
-        System.out.print("Escolha uma opção: ");
-        String input = scanner.nextLine();
+    System.out.println("\n1 - Fazer login");
 
-        switch (input) {
-            case "1":
-                usuarioLogado = realizarLogin();
-                break;
-            case "2":
-                cadastrarUsuario();
-                break;
-            case "0":
-                System.out.println("Encerrando o sistema.");
-                System.exit(0);
-                break;
-            default:
-                System.out.println("Opção inválida.");
-        }
+    // Só permite cadastro se não houver nenhum usuário ainda
+    if (controleUsuario.listar().isEmpty()) {
+        System.out.println("2 - Cadastrar novo usuário");
     }
+
+    System.out.println("0 - Sair");
+    System.out.print("Escolha uma opção: ");
+    String input = scanner.nextLine();
+
+    switch (input) {
+        case "1":
+            usuarioLogado = realizarLogin();
+            break;
+        case "2":
+            if (controleUsuario.listar().isEmpty()) {
+                cadastrarUsuario();
+            } else {
+                System.out.println("Cadastro bloqueado. Apenas administradores podem cadastrar novos usuários.");
+            }
+            break;
+        case "0":
+            System.out.println("Encerrando o sistema.");
+            System.exit(0);
+            break;
+        default:
+            System.out.println("Opção inválida.");
+    }
+}
+
 
     private Usuario realizarLogin() {
         System.out.println("\n--- LOGIN ---");
@@ -76,28 +86,28 @@ public class UIprincipal {
     }
 
     private void cadastrarUsuario() {
-        System.out.println("\n--- CADASTRO DE USUÁRIO ---");
+    System.out.println("\n--- CADASTRO DE USUÁRIO ---");
 
-        System.out.print("Nome: ");
-        String nome = scanner.nextLine();
+    System.out.print("Nome: ");
+    String nome = scanner.nextLine();
 
-        System.out.print("Email: ");
-        String email = scanner.nextLine();
+    System.out.print("Email: ");
+    String email = scanner.nextLine();
 
-        System.out.print("Senha: ");
-        String senha = scanner.nextLine();
+    System.out.print("Senha: ");
+    String senha = scanner.nextLine();
 
-        System.out.print("Tipo de usuário (Admin/Apicultor): ");
-        String tipo = scanner.nextLine();
+    String tipo = "Admin"; // só será chamado se for o primeiro
 
-        boolean sucesso = controleUsuario.criarUsuario(nome, email, senha, tipo);
+    boolean sucesso = controleUsuario.criarUsuario(nome, email, senha, tipo);
 
-        if (sucesso) {
-            System.out.println("Usuário cadastrado com sucesso. Agora você pode fazer login.");
-        } else {
-            System.out.println("Cadastro falhou. Verifique os dados ou se o e-mail já está em uso.");
-        }
+    if (sucesso) {
+        System.out.println("Usuário administrador cadastrado com sucesso. Agora você pode fazer login.");
+    } else {
+        System.out.println("Cadastro falhou. Verifique os dados ou se o e-mail já está em uso.");
     }
+}
+
 
     private void exibirMenuPrincipal() {
         int opcao;
