@@ -1,7 +1,7 @@
 package Repositório;
 
-import Controle.Apiario;
-import Controle.Visita;
+import controle.Apiario;
+import controle.Visita;
 import java.util.ArrayList;
 import java.util.List;
 

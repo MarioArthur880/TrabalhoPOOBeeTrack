@@ -1,4 +1,4 @@
-package Controle;
+package controle;
 
 import Repositório.RepositorioVisita;
 import java.util.List;

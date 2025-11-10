@@ -1,4 +1,4 @@
-package Controle;
+package controle;
 
 public class Apiario {
     private int id;

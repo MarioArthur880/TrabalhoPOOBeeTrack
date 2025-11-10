@@ -1,9 +1,9 @@
 package UI;
 
-import Controle.ControleVisita;
-import Controle.ControleApiario;
-import Controle.Visita;
-import Controle.Apiario;
+import controle.ControleVisita;
+import controle.ControleApiario;
+import controle.Visita;
+import controle.Apiario;
 import java.util.List;
 import java.util.Scanner;
 
