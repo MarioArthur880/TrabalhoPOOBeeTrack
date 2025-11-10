@@ -8,9 +8,9 @@ import java.util.Scanner;
 public class UIusuario {
     private Scanner scanner;
     private ControleUsuario controle;
-    private Usuario usuarioLogado;
+    private RepositorioUsuario usuarioLogado;
 
-    public UIusuario(Scanner scanner, ControleUsuario controle, Usuario usuarioLogado) {
+    public UIusuario(Scanner scanner, ControleUsuario controle, RepositorioUsuario usuarioLogado) {
         this.scanner = scanner;
         this.controle = controle;
         this.usuarioLogado = usuarioLogado;
@@ -89,7 +89,7 @@ public class UIusuario {
     boolean sucesso = controle.criarUsuario(nome, email, senha, tipoUsuario);
 
     if (sucesso) {
-        Usuario novo = controle.buscarPorEmail(email);
+        RepositorioUsuario novo = controle.buscarPorEmail(email);
         if (novo != null && novo.getTipoUsuario().equalsIgnoreCase("Admin") && controle.listar().size() == 1) {
             System.out.println("Este é o primeiro usuário do sistema e foi cadastrado como Administrador.");
         } else {
@@ -105,7 +105,7 @@ public class UIusuario {
 
     private void listar() {
         System.out.println("\n--- LISTA DE USUÁRIOS ---");
-        List<Usuario> usuarios = controle.listar();
+        List<RepositorioUsuario> usuarios = controle.listar();
 
         if (usuarios.isEmpty()) {
             System.out.println("Nenhum usuário cadastrado.");
@@ -113,14 +113,14 @@ public class UIusuario {
             if (usuarioLogado.getTipoUsuario().equalsIgnoreCase("Admin")) {
                 System.out.printf("%-5s %-20s %-25s %-15s %-15s%n", "ID", "Nome", "Email", "Tipo", "Senha");
                 System.out.println("-------------------------------------------------------------------------------");
-                for (Usuario u : usuarios) {
+                for (RepositorioUsuario u : usuarios) {
                     System.out.printf("%-5d %-20s %-25s %-15s %-15s%n",
                             u.getId(), u.getNome(), u.getEmail(), u.getTipoUsuario(), u.getSenha());
                 }
             } else {
                 System.out.printf("%-5s %-20s %-25s %-15s%n", "ID", "Nome", "Email", "Tipo");
                 System.out.println("---------------------------------------------------------------");
-                for (Usuario u : usuarios) {
+                for (RepositorioUsuario u : usuarios) {
                     System.out.printf("%-5d %-20s %-25s %-15s%n",
                             u.getId(), u.getNome(), u.getEmail(), u.getTipoUsuario());
                 }
@@ -133,7 +133,7 @@ public class UIusuario {
         System.out.print("Email do usuário: ");
         String email = scanner.nextLine();
 
-        Usuario usuario = controle.buscarPorEmail(email);
+        RepositorioUsuario usuario = controle.buscarPorEmail(email);
 
         if (usuario == null) {
             System.out.println("Usuário não encontrado.");

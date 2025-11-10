@@ -1,4 +1,4 @@
-package modelo;
+package Controle;
 
 public class Visita {
     private int id;
@@ -21,16 +21,6 @@ public class Visita {
         this.apiario = outra.apiario;
         this.colheita = outra.colheita;
         this.tipoVisita = outra.tipoVisita;
-    }
-
-    public static Visita criarVisita(int id, String data, Apiario apiario, int colheita, String tipoVisita) {
-        if (id <= 0 || data == null || data.trim().isEmpty() ||
-            apiario == null || colheita < 0 ||
-            tipoVisita == null || tipoVisita.trim().isEmpty()) {
-            return null;
-        }
-
-        return new Visita(id, data, apiario, colheita, tipoVisita);
     }
 
     public int getId() {

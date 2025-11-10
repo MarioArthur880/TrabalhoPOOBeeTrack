@@ -1,9 +1,9 @@
-package vizualização;
+package UI;
 
-import controle.ControleVisita;
-import controle.ControleApiario;
-import modelo.Visita;
-import modelo.Apiario;
+import Controle.ControleVisita;
+import Controle.ControleApiario;
+import Controle.Visita;
+import Controle.Apiario;
 import java.util.List;
 import java.util.Scanner;
 
@@ -20,7 +20,6 @@ public class UIvisita {
 
     public void exibir() {
         int opcao;
-
         do {
             System.out.println("\n========================================");
             System.out.println("         GERENCIAMENTO DE VISITAS");
@@ -47,25 +46,35 @@ public class UIvisita {
 
     private void processarOpcao(int opcao) {
         switch (opcao) {
-            case 1: registrar(); break;
-            case 2: listar(); break;
-            case 3: atualizar(); break;
-            case 4: remover(); break;
-            case 0: break;
-            default: System.out.println("Opção inválida.");
-        }
+    case 1:
+        registrar();
+        break;
+    case 2:
+        listar();
+        break;
+    case 3:
+        atualizar();
+        break;
+    case 4:
+        remover();
+        break;
+    case 0:
+        break;
+    default:
+        System.out.println("Opção inválida.");
+        break;
+}
+
     }
 
     private void registrar() {
         System.out.println("\n--- REGISTRAR VISITA ---");
-
         System.out.print("Data (ex: 19/10/2025): ");
         String data = scanner.nextLine();
 
         System.out.print("ID do apiário visitado: ");
         int idApiario = Integer.parseInt(scanner.nextLine());
         Apiario apiario = controleApiario.buscarPorId(idApiario);
-
         if (apiario == null) {
             System.out.println("Apiário não encontrado.");
             return;
@@ -78,12 +87,7 @@ public class UIvisita {
         String tipoVisita = scanner.nextLine();
 
         boolean sucesso = controleVisita.criarVisita(data, apiario, colheita, tipoVisita);
-
-        if (sucesso) {
-            System.out.println("Visita registrada com sucesso.");
-        } else {
-            System.out.println("Dados inválidos. Visita não registrada.");
-        }
+        System.out.println(sucesso ? "Visita registrada com sucesso." : "Dados inválidos. Visita não registrada.");
     }
 
     private void listar() {
@@ -107,7 +111,6 @@ public class UIvisita {
         System.out.println("\n--- ATUALIZAR VISITA ---");
         System.out.print("ID da visita: ");
         int id = Integer.parseInt(scanner.nextLine());
-
         Visita visita = controleVisita.buscarPorId(id);
 
         if (visita == null) {
@@ -117,47 +120,35 @@ public class UIvisita {
 
         System.out.print("Nova data (Enter para manter): ");
         String data = scanner.nextLine();
-        if (!data.trim().isEmpty()) {
-            visita.setData(data);
-        }
+        if (!data.trim().isEmpty()) visita.setData(data);
 
         System.out.print("Novo ID de apiário (Enter para manter): ");
         String idApiarioInput = scanner.nextLine();
         if (!idApiarioInput.trim().isEmpty()) {
             int idApiario = Integer.parseInt(idApiarioInput);
             Apiario novoApiario = controleApiario.buscarPorId(idApiario);
-            if (novoApiario != null) {
-                visita.setApiario(novoApiario);
-            } else {
-                System.out.println("Apiário não encontrado. Mantido o anterior.");
-            }
+            if (novoApiario != null) visita.setApiario(novoApiario);
+            else System.out.println("Apiário não encontrado. Mantido o anterior.");
         }
 
         System.out.print("Nova quantidade colhida (Enter para manter): ");
         String colheitaInput = scanner.nextLine();
-        if (!colheitaInput.trim().isEmpty()) {
-            int colheita = Integer.parseInt(colheitaInput);
-            visita.setColheita(colheita);
-        }
+        if (!colheitaInput.trim().isEmpty()) visita.setColheita(Integer.parseInt(colheitaInput));
 
         System.out.print("Novo tipo de visita (Enter para manter): ");
         String tipo = scanner.nextLine();
-        if (!tipo.trim().isEmpty()) {
-            visita.setTipoVisita(tipo);
-        }
+        if (!tipo.trim().isEmpty()) visita.setTipoVisita(tipo);
 
-        System.out.println("Visita atualizada com sucesso.");
+        boolean sucesso = controleVisita.atualizar(visita);
+        System.out.println(sucesso ? "Visita atualizada com sucesso." : "Erro ao atualizar visita.");
     }
 
     private void remover() {
         System.out.println("\n--- REMOVER VISITA ---");
         System.out.print("ID da visita: ");
         int id = Integer.parseInt(scanner.nextLine());
-
-        if (controleVisita.remover(id)) {
-            System.out.println("Visita removida com sucesso.");
-        } else {
-            System.out.println("Visita não encontrada.");
-        }
+        System.out.println(controleVisita.remover(id)
+                ? "Visita removida com sucesso."
+                : "Visita não encontrada.");
     }
 }

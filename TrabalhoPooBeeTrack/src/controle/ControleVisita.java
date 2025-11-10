@@ -1,61 +1,50 @@
-package controle;
+package Controle;
 
-import modelo.*;
-import java.util.ArrayList;
+import Repositório.RepositorioVisita;
 import java.util.List;
 
 public class ControleVisita {
-    private List<Visita> listaVisitas = new ArrayList<>();
-    private int proximoId = 1;
+    private RepositorioVisita repositorio;
+
+    public ControleVisita(RepositorioVisita repositorio) {
+        this.repositorio = repositorio;
+    }
 
     public boolean criarVisita(String data, Apiario apiario, int colheita, String tipoVisita) {
-        Visita nova = Visita.criarVisita(proximoId, data, apiario, colheita, tipoVisita);
-        if (nova != null) {
-            listaVisitas.add(nova);
-            proximoId++;
-            return true;
-        }
-        return false;
+        if (data == null || data.trim().isEmpty()) return false;
+        if (apiario == null) return false;
+        if (colheita < 0) return false;
+        if (tipoVisita == null || tipoVisita.trim().isEmpty()) return false;
+
+        Visita novaVisita = new Visita(0, data, apiario, colheita, tipoVisita);
+        return repositorio.adicionar(novaVisita);
     }
 
     public List<Visita> listar() {
-        return new ArrayList<>(listaVisitas);
-    }
-
-    public boolean remover(int id) {
-        return listaVisitas.removeIf(v -> v.getId() == id);
+        return repositorio.listarTodos();
     }
 
     public Visita buscarPorId(int id) {
-        for (Visita v : listaVisitas) {
-            if (v.getId() == id) {
-                return v;
-            }
-        }
-        return null;
+        if (id <= 0) return null;
+        return repositorio.buscarPorId(id);
     }
 
-    public boolean atualizar(Visita novaVisita) {
-        if (novaVisita == null) return false;
+    public boolean remover(int id) {
+        if (id <= 0) return false;
+        return repositorio.remover(id);
+    }
 
-        for (int i = 0; i < listaVisitas.size(); i++) {
-            if (listaVisitas.get(i).getId() == novaVisita.getId()) {
-                listaVisitas.set(i, novaVisita);
-                return true;
-            }
-        }
-        return false;
+    public boolean atualizar(Visita visita) {
+        if (visita == null) return false;
+        if (visita.getData() == null || visita.getData().trim().isEmpty()) return false;
+        if (visita.getApiario() == null) return false;
+        if (visita.getColheita() < 0) return false;
+        if (visita.getTipoVisita() == null || visita.getTipoVisita().trim().isEmpty()) return false;
+
+        return repositorio.atualizar(visita);
     }
 
     public List<Visita> listarPorApiario(Apiario apiario) {
-        List<Visita> resultado = new ArrayList<>();
-        if (apiario == null) return resultado;
-
-        for (Visita v : listaVisitas) {
-            if (v.getApiario() != null && v.getApiario().getId() == apiario.getId()) {
-                resultado.add(v);
-            }
-        }
-        return resultado;
+        return repositorio.listarPorApiario(apiario);
     }
 }

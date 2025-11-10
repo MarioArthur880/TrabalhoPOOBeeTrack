@@ -1,10 +1,10 @@
-import controle.ControleUsuario;
-import controle.ControleApiario;
-import controle.ControleVisita;
-import modelo.Usuario;
-import vizualização.UIapiario;
-import vizualização.UIusuario;
-import vizualização.UIvisita;
+import Controle.ControleUsuario;
+import Controle.ControleApiario;
+import Controle.ControleVisita;
+import Controle.Usuario;
+import UI.UIapiario;
+import UI.UIusuario;
+import UI.UIvisita;
 
 import java.util.Scanner;
 
@@ -13,7 +13,7 @@ public class UIprincipal {
     private ControleUsuario controleUsuario = new ControleUsuario();
     private ControleApiario controleApiario = new ControleApiario();
     private ControleVisita controleVisita = new ControleVisita();
-    private Usuario usuarioLogado = null;
+    private RepositorioUsuario usuarioLogado = null;
 
     public static void main(String[] args) {
         UIprincipal principal = new UIprincipal();
@@ -66,7 +66,7 @@ public class UIprincipal {
 }
 
 
-    private Usuario realizarLogin() {
+    private RepositorioUsuario realizarLogin() {
         System.out.println("\n--- LOGIN ---");
         System.out.print("Email: ");
         String email = scanner.nextLine();
@@ -74,7 +74,7 @@ public class UIprincipal {
         System.out.print("Senha: ");
         String senha = scanner.nextLine();
 
-        Usuario usuario = controleUsuario.buscarPorEmail(email);
+        RepositorioUsuario usuario = controleUsuario.buscarPorEmail(email);
 
         if (usuario != null && usuario.getSenha().equals(senha)) {
             System.out.println("Login realizado com sucesso. Bem-vindo, " + usuario.getNome() + "!");

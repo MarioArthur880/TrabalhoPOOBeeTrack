@@ -1,7 +1,8 @@
-package vizualização;
+package UI;
 
-import controle.ControleApiario;
-import modelo.Apiario;
+import Controle.ControleApiario;
+import Controle.Apiario;
+import Repositório.RepositorioApiario;
 import java.util.List;
 import java.util.Scanner;
 
@@ -129,7 +130,12 @@ public class UIapiario {
             apiario.setQntCaixas(qntCaixas);
         }
 
-        System.out.println("Apiário atualizado com sucesso.");
+        boolean sucesso = controle.atualizar(apiario);
+        if (sucesso) {
+            System.out.println("Apiário atualizado com sucesso.");
+        } else {
+            System.out.println("Erro ao atualizar apiário.");
+        }
     }
 
     private void remover() {

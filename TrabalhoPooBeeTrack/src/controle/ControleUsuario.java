@@ -1,6 +1,6 @@
-package controle;
+package Controle;
 
-import modelo.Usuario;
+import Controle.Usuario;
 import java.util.ArrayList;
 import java.util.List;
 

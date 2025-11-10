@@ -1,4 +1,4 @@
-package modelo;
+package Controle;
 
 public class Apiario {
     private int id;
@@ -21,17 +21,6 @@ public class Apiario {
         this.raca = outro.raca;
         this.local = outro.local;
         this.qntCaixas = outro.qntCaixas;
-    }
-
-    public static Apiario criarApiario(int id, String nome, String raca, String local, int qntCaixas) {
-        if (id <= 0 || nome == null || nome.trim().isEmpty() ||
-            raca == null || raca.trim().isEmpty() ||
-            local == null || local.trim().isEmpty() ||
-            qntCaixas < 0) {
-            return null;
-        }
-
-        return new Apiario(id, nome, raca, local, qntCaixas);
     }
 
     public int getId() {
