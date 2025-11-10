@@ -18,7 +18,7 @@ public class UIprincipal {
     public static void main(String[] args) {
         UIprincipal principal = new UIprincipal();
         principal.iniciarSistema();
-        principal.scanner.close(); // fechamento seguro após uso
+        principal.scanner.close();
     }
 
     public void iniciarSistema() {
@@ -36,7 +36,6 @@ public class UIprincipal {
     private void exibirTelaInicial() {
     System.out.println("\n1 - Fazer login");
 
-    // Só permite cadastro se não houver nenhum usuário ainda
     if (controleUsuario.listar().isEmpty()) {
         System.out.println("2 - Cadastrar novo usuário");
     }
@@ -97,7 +96,7 @@ public class UIprincipal {
     System.out.print("Senha: ");
     String senha = scanner.nextLine();
 
-    String tipo = "Admin"; // só será chamado se for o primeiro
+    String tipo = "Admin"; 
 
     boolean sucesso = controleUsuario.criarUsuario(nome, email, senha, tipo);
 
