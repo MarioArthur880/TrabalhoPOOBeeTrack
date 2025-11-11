@@ -1,7 +1,7 @@
 package controle;
 
-import Repositório.RepositorioVisita;
 import java.util.List;
+import repositorio.RepositorioVisita;
 
 public class ControleVisita {
     private RepositorioVisita repositorio;

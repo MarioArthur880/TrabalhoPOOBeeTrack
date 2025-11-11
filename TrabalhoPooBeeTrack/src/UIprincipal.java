@@ -1,6 +1,7 @@
 import controle.ControleUsuario;
 import controle.ControleApiario;
 import controle.ControleVisita;
+import repositorio.RepositorioUsuario;
 import UI.UIapiario;
 import UI.UIusuario;
 import UI.UIvisita;

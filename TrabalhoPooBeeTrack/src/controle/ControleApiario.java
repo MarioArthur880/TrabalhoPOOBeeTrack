@@ -1,8 +1,7 @@
 package controle;
 
-import controle.Apiario;
-import Repositório.RepositorioApiario;
 import java.util.List;
+import repositorio.RepositorioApiario;
 
 public class ControleApiario {
     private RepositorioApiario repositorio;

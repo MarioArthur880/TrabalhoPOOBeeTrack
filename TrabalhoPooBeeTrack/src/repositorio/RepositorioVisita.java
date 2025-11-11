@@ -1,4 +1,4 @@
-package Repositório;
+package repositorio;
 
 import controle.Apiario;
 import controle.Visita;

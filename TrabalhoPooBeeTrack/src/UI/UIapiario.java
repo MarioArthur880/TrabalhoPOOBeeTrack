@@ -1,8 +1,7 @@
 package UI;
 
-import controle.ControleApiario;
 import controle.Apiario;
-import Repositório.RepositorioApiario;
+import controle.ControleApiario;
 import java.util.List;
 import java.util.Scanner;
 

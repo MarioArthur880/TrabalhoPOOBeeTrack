@@ -1,10 +1,10 @@
 package UI;
 
 import controle.ControleUsuario;
+import repositorio.RepositorioUsuario;
+
 import java.util.List;
 import java.util.Scanner;
-
-import Repositório.RepositorioUsuario;
 
 public class UIusuario {
     private Scanner scanner;
