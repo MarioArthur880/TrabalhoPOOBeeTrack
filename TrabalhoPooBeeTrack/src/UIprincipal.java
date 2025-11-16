@@ -1,7 +1,10 @@
 import controle.ControleUsuario;
 import controle.ControleApiario;
 import controle.ControleVisita;
+import controle.Usuario;
 import repositorio.RepositorioUsuario;
+import repositorio.RepositorioApiario;
+import repositorio.RepositorioVisita;
 import UI.UIapiario;
 import UI.UIusuario;
 import UI.UIvisita;
@@ -10,10 +13,22 @@ import java.util.Scanner;
 
 public class UIprincipal {
     private Scanner scanner = new Scanner(System.in);
-    private ControleUsuario controleUsuario = new ControleUsuario();
-    private ControleApiario controleApiario = new ControleApiario();
-    private ControleVisita controleVisita = new ControleVisita();
-    private RepositorioUsuario usuarioLogado = null;
+    private ControleUsuario controleUsuario;
+    private ControleApiario controleApiario;
+    private ControleVisita controleVisita;
+    private Usuario usuarioLogado = null;
+
+    public UIprincipal() {
+        // Inicializa os repositórios
+        RepositorioUsuario repoUsuario = new RepositorioUsuario();
+        RepositorioApiario repoApiario = new RepositorioApiario();
+        RepositorioVisita repoVisita = new RepositorioVisita();
+        
+        // Inicializa os controles com seus repositórios
+        this.controleUsuario = new ControleUsuario(repoUsuario);
+        this.controleApiario = new ControleApiario(repoApiario);
+        this.controleVisita = new ControleVisita(repoVisita, repoApiario, repoUsuario);
+    }
 
     public static void main(String[] args) {
         UIprincipal principal = new UIprincipal();
@@ -34,38 +49,37 @@ public class UIprincipal {
     }
 
     private void exibirTelaInicial() {
-    System.out.println("\n1 - Fazer login");
+        System.out.println("\n1 - Fazer login");
 
-    if (controleUsuario.listar().isEmpty()) {
-        System.out.println("2 - Cadastrar novo usuário");
+        if (controleUsuario.listar().isEmpty()) {
+            System.out.println("2 - Cadastrar novo usuário");
+        }
+
+        System.out.println("0 - Sair");
+        System.out.print("Escolha uma opção: ");
+        String input = scanner.nextLine();
+
+        switch (input) {
+            case "1":
+                usuarioLogado = realizarLogin();
+                break;
+            case "2":
+                if (controleUsuario.listar().isEmpty()) {
+                    cadastrarUsuario();
+                } else {
+                    System.out.println("Cadastro bloqueado. Apenas administradores podem cadastrar novos usuários.");
+                }
+                break;
+            case "0":
+                System.out.println("Encerrando o sistema.");
+                System.exit(0);
+                break;
+            default:
+                System.out.println("Opção inválida.");
+        }
     }
 
-    System.out.println("0 - Sair");
-    System.out.print("Escolha uma opção: ");
-    String input = scanner.nextLine();
-
-    switch (input) {
-        case "1":
-            usuarioLogado = realizarLogin();
-            break;
-        case "2":
-            if (controleUsuario.listar().isEmpty()) {
-                cadastrarUsuario();
-            } else {
-                System.out.println("Cadastro bloqueado. Apenas administradores podem cadastrar novos usuários.");
-            }
-            break;
-        case "0":
-            System.out.println("Encerrando o sistema.");
-            System.exit(0);
-            break;
-        default:
-            System.out.println("Opção inválida.");
-    }
-}
-
-
-    private RepositorioUsuario realizarLogin() {
+    private Usuario realizarLogin() {
         System.out.println("\n--- LOGIN ---");
         System.out.print("Email: ");
         String email = scanner.nextLine();
@@ -73,7 +87,7 @@ public class UIprincipal {
         System.out.print("Senha: ");
         String senha = scanner.nextLine();
 
-        RepositorioUsuario usuario = controleUsuario.buscarPorEmail(email);
+        Usuario usuario = controleUsuario.buscarPorEmail(email);
 
         if (usuario != null && usuario.getSenha().equals(senha)) {
             System.out.println("Login realizado com sucesso. Bem-vindo, " + usuario.getNome() + "!");
@@ -85,28 +99,27 @@ public class UIprincipal {
     }
 
     private void cadastrarUsuario() {
-    System.out.println("\n--- CADASTRO DE USUÁRIO ---");
+        System.out.println("\n--- CADASTRO DE USUÁRIO ---");
 
-    System.out.print("Nome: ");
-    String nome = scanner.nextLine();
+        System.out.print("Nome: ");
+        String nome = scanner.nextLine();
 
-    System.out.print("Email: ");
-    String email = scanner.nextLine();
+        System.out.print("Email: ");
+        String email = scanner.nextLine();
 
-    System.out.print("Senha: ");
-    String senha = scanner.nextLine();
+        System.out.print("Senha: ");
+        String senha = scanner.nextLine();
 
-    String tipo = "Admin"; 
+        String tipo = "Admin"; 
 
-    boolean sucesso = controleUsuario.criarUsuario(nome, email, senha, tipo);
+        boolean sucesso = controleUsuario.criarUsuario(nome, email, senha, tipo);
 
-    if (sucesso) {
-        System.out.println("Usuário administrador cadastrado com sucesso. Agora você pode fazer login.");
-    } else {
-        System.out.println("Cadastro falhou. Verifique os dados ou se o e-mail já está em uso.");
+        if (sucesso) {
+            System.out.println("✓ Usuário administrador cadastrado com sucesso. Agora você pode fazer login.");
+        } else {
+            System.out.println("✗ " + controleUsuario.getUltimaMensagemErro());
+        }
     }
-}
-
 
     private void exibirMenuPrincipal() {
         int opcao;
@@ -148,7 +161,7 @@ public class UIprincipal {
                     UIusuario uiUsuario = new UIusuario(scanner, controleUsuario, usuarioLogado);
                     uiUsuario.exibir();
                 } else {
-                    System.out.println("Acesso negado. Apenas administradores podem gerenciar usuários.");
+                    System.out.println("✗ Acesso negado. Apenas administradores podem gerenciar usuários.");
                 }
                 break;
             case 2:

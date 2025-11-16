@@ -4,6 +4,9 @@ import controle.Apiario;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Repositório responsável por gerenciar a persistência de apiários
+ */
 public class RepositorioApiario {
     private List<Apiario> listaApiarios;
     private int proximoId;
@@ -14,9 +17,7 @@ public class RepositorioApiario {
     }
 
     /**
-     * Adiciona um novo apiário
-     * @param apiario O objeto Apiario a ser adicionado
-     * @return true se adicionado com sucesso, false caso contrário
+     * Adiciona um novo apiário ao repositório
      */
     public boolean adicionar(Apiario apiario) {
         if (apiario == null) {
@@ -36,8 +37,7 @@ public class RepositorioApiario {
     }
 
     /**
-     * Lista todos os apiários
-     * @return Lista com cópias de todos os apiários
+     * Lista todos os apiários cadastrados
      */
     public List<Apiario> listarTodos() {
         List<Apiario> copias = new ArrayList<>();
@@ -49,8 +49,6 @@ public class RepositorioApiario {
 
     /**
      * Busca um apiário por ID
-     * @param id O ID do apiário a ser buscado
-     * @return Uma cópia do apiário encontrado ou null se não existir
      */
     public Apiario buscarPorId(int id) {
         for (Apiario apiario : listaApiarios) {
@@ -62,9 +60,23 @@ public class RepositorioApiario {
     }
 
     /**
+     * Busca apiário por nome
+     */
+    public Apiario buscarPorNome(String nome) {
+        if (nome == null || nome.trim().isEmpty()) {
+            return null;
+        }
+
+        for (Apiario apiario : listaApiarios) {
+            if (apiario.getNome().equalsIgnoreCase(nome.trim())) {
+                return new Apiario(apiario);
+            }
+        }
+        return null;
+    }
+
+    /**
      * Remove um apiário por ID
-     * @param id O ID do apiário a ser removido
-     * @return true se removido com sucesso, false caso contrário
      */
     public boolean remover(int id) {
         for (int i = 0; i < listaApiarios.size(); i++) {
@@ -78,8 +90,6 @@ public class RepositorioApiario {
 
     /**
      * Atualiza um apiário existente
-     * @param apiarioAtualizado O objeto com os dados atualizados
-     * @return true se atualizado com sucesso, false caso contrário
      */
     public boolean atualizar(Apiario apiarioAtualizado) {
         if (apiarioAtualizado == null) {
@@ -88,7 +98,6 @@ public class RepositorioApiario {
 
         for (int i = 0; i < listaApiarios.size(); i++) {
             if (listaApiarios.get(i).getId() == apiarioAtualizado.getId()) {
-                // Substitui pelo objeto atualizado (mantendo o ID)
                 Apiario copia = new Apiario(apiarioAtualizado);
                 listaApiarios.set(i, copia);
                 return true;
@@ -98,9 +107,7 @@ public class RepositorioApiario {
     }
 
     /**
-     * Lista todos os apiários de um local específico
-     * @param local O local a ser buscado
-     * @return Lista com cópias dos apiários do local
+     * Lista apiários por local
      */
     public List<Apiario> listarPorLocal(String local) {
         List<Apiario> resultado = new ArrayList<>();
@@ -120,8 +127,6 @@ public class RepositorioApiario {
 
     /**
      * Lista apiários por raça de abelha
-     * @param raca A raça a ser buscada
-     * @return Lista com cópias dos apiários da raça especificada
      */
     public List<Apiario> listarPorRaca(String raca) {
         List<Apiario> resultado = new ArrayList<>();
@@ -140,26 +145,7 @@ public class RepositorioApiario {
     }
 
     /**
-     * Busca apiário por nome
-     * @param nome O nome do apiário
-     * @return Uma cópia do apiário encontrado ou null se não existir
-     */
-    public Apiario buscarPorNome(String nome) {
-        if (nome == null || nome.trim().isEmpty()) {
-            return null;
-        }
-
-        for (Apiario apiario : listaApiarios) {
-            if (apiario.getNome().equalsIgnoreCase(nome.trim())) {
-                return new Apiario(apiario);
-            }
-        }
-        return null;
-    }
-
-    /**
      * Calcula o total de caixas de todos os apiários
-     * @return O número total de caixas
      */
     public int calcularTotalCaixas() {
         int total = 0;
@@ -171,8 +157,6 @@ public class RepositorioApiario {
 
     /**
      * Calcula o total de caixas por local
-     * @param local O local a ser calculado
-     * @return O número total de caixas no local
      */
     public int calcularTotalCaixasPorLocal(String local) {
         int total = 0;
@@ -192,7 +176,6 @@ public class RepositorioApiario {
 
     /**
      * Retorna a quantidade total de apiários
-     * @return O número de apiários no repositório
      */
     public int getTotalApiarios() {
         return listaApiarios.size();
@@ -200,8 +183,6 @@ public class RepositorioApiario {
 
     /**
      * Verifica se existe algum apiário em um local específico
-     * @param local O nome do local
-     * @return true se existe pelo menos um apiário, false caso contrário
      */
     public boolean existeLocal(String local) {
         if (local == null || local.trim().isEmpty()) {

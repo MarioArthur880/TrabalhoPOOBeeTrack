@@ -1,5 +1,8 @@
 package controle;
 
+/**
+ * Classe que representa um apiário
+ */
 public class Apiario {
     private int id;
     private String nome;
@@ -7,6 +10,9 @@ public class Apiario {
     private String local;
     private int qntCaixas;
 
+    /**
+     * Construtor completo
+     */
     public Apiario(int id, String nome, String raca, String local, int qntCaixas) {
         this.id = id;
         this.nome = nome;
@@ -15,6 +21,9 @@ public class Apiario {
         this.qntCaixas = qntCaixas;
     }
 
+    /**
+     * Construtor de cópia
+     */
     public Apiario(Apiario outro) {
         this.id = outro.id;
         this.nome = outro.nome;
@@ -23,6 +32,7 @@ public class Apiario {
         this.qntCaixas = outro.qntCaixas;
     }
 
+    // Getters
     public int getId() {
         return id;
     }
@@ -43,6 +53,7 @@ public class Apiario {
         return qntCaixas;
     }
 
+    // Setters
     public void setId(int id) {
         this.id = id;
     }
@@ -61,5 +72,11 @@ public class Apiario {
 
     public void setQntCaixas(int qntCaixas) {
         this.qntCaixas = qntCaixas;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Apiário[ID=%d, Nome=%s, Raça=%s, Local=%s, Caixas=%d]",
+                id, nome, raca, local, qntCaixas);
     }
 }
