@@ -1,16 +1,13 @@
 import controle.ControleUsuario;
 import controle.ControleApiario;
 import controle.ControleVisita;
-import controle.ControleMelDeTerceiros;
 import controle.Pessoa;
 import repositorio.RepositorioUsuario;
 import repositorio.RepositorioApiario;
 import repositorio.RepositorioVisita;
-import repositorio.RepositorioMelDeTerceiros;
 import UI.UIapiario;
 import UI.UIusuario;
 import UI.UIvisita;
-import UI.UImeldeterceiros;
 
 import java.util.Scanner;
 
@@ -19,7 +16,6 @@ public class UIprincipal {
     private ControleUsuario controleUsuario;
     private ControleApiario controleApiario;
     private ControleVisita controleVisita;
-    private ControleMelDeTerceiros controleMel;
     private Pessoa usuarioLogado = null;
 
     public UIprincipal() {
@@ -27,13 +23,11 @@ public class UIprincipal {
         RepositorioUsuario repoUsuario = new RepositorioUsuario();
         RepositorioApiario repoApiario = new RepositorioApiario();
         RepositorioVisita repoVisita = new RepositorioVisita();
-        RepositorioMelDeTerceiros repoMel = new RepositorioMelDeTerceiros();
         
         // Inicializa os controles com seus repositórios
         this.controleUsuario = new ControleUsuario(repoUsuario);
         this.controleApiario = new ControleApiario(repoApiario);
         this.controleVisita = new ControleVisita(repoVisita);
-        this.controleMel = new ControleMelDeTerceiros(repoMel);
     }
 
     public static void main(String[] args) {
@@ -57,7 +51,7 @@ public class UIprincipal {
     private void exibirTelaInicial() {
         System.out.println("\n1 - Fazer login");
 
-        if (controleUsuario.isPrimeiroUsuario()) {
+        if (controleUsuario.listar().isEmpty()) {
             System.out.println("2 - Cadastrar novo usuário");
         }
 
@@ -70,7 +64,7 @@ public class UIprincipal {
                 usuarioLogado = realizarLogin();
                 break;
             case "2":
-                if (controleUsuario.isPrimeiroUsuario()) {
+                if (controleUsuario.listar().isEmpty()) {
                     cadastrarUsuario();
                 } else {
                     System.out.println("Cadastro bloqueado. Apenas administradores podem cadastrar novos usuários.");
@@ -93,13 +87,13 @@ public class UIprincipal {
         System.out.print("Senha: ");
         String senha = scanner.nextLine();
 
-        Pessoa usuario = controleUsuario.validarLogin(email, senha);
+        Pessoa usuario = controleUsuario.buscarPorEmail(email);
 
-        if (usuario != null) {
-            System.out.println("Login realizado com sucesso. Bem-vindo, " + usuario.getNome() + "!");
+        if (usuario != null && usuario.validarSenha(senha)) {
+            System.out.println("✓ Login realizado com sucesso. Bem-vindo, " + usuario.getNome() + "!");
             return usuario;
         } else {
-            System.out.println("Email ou senha inválidos.");
+            System.out.println("✗ Email ou senha inválidos.");
             return null;
         }
     }
@@ -123,7 +117,7 @@ public class UIprincipal {
         if (sucesso) {
             System.out.println("✓ Usuário administrador cadastrado com sucesso. Agora você pode fazer login.");
         } else {
-            System.out.println("✗ Cadastro falhou. Verifique os dados ou se o e-mail já está em uso.");
+            System.out.println("✗ " + controleUsuario.getUltimaMensagemErro());
         }
     }
 
@@ -137,8 +131,7 @@ public class UIprincipal {
             System.out.println("1 - Gerenciar Usuários");
             System.out.println("2 - Gerenciar Apiários");
             System.out.println("3 - Gerenciar Visitas");
-            System.out.println("4 - Gerenciar Mel de Terceiros");
-            System.out.println("5 - Logout");
+            System.out.println("4 - Logout");
             System.out.println("0 - Sair");
             System.out.println("========================================");
             System.out.print("Escolha uma opção: ");
@@ -180,10 +173,6 @@ public class UIprincipal {
                 uiVisita.exibir();
                 break;
             case 4:
-                UImeldeterceiros uiMel = new UImeldeterceiros(scanner, controleMel);
-                uiMel.exibir();
-                break;
-            case 5:
                 System.out.println("Logout realizado. Até logo, " + usuarioLogado.getNome() + "!");
                 usuarioLogado = null;
                 break;

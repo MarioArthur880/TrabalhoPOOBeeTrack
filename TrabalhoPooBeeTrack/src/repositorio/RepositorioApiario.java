@@ -60,7 +60,7 @@ public class RepositorioApiario {
     }
 
     /**
-     * Busca apiário por nome
+     * Busca apiário por nome (retorna o primeiro encontrado)
      */
     public Apiario buscarPorNome(String nome) {
         if (nome == null || nome.trim().isEmpty()) {
@@ -73,6 +73,32 @@ public class RepositorioApiario {
             }
         }
         return null;
+    }
+
+    /**
+     * Busca todos os apiários com um determinado nome
+     */
+    public List<Apiario> buscarTodosPorNome(String nome) {
+        List<Apiario> resultado = new ArrayList<>();
+        
+        if (nome == null || nome.trim().isEmpty()) {
+            return resultado;
+        }
+
+        for (Apiario apiario : listaApiarios) {
+            if (apiario.getNome().equalsIgnoreCase(nome.trim())) {
+                resultado.add(new Apiario(apiario));
+            }
+        }
+        
+        return resultado;
+    }
+
+    /**
+     * Verifica se existe um apiário com o nome especificado
+     */
+    public boolean existeNome(String nome) {
+        return buscarPorNome(nome) != null;
     }
 
     /**
@@ -100,6 +126,23 @@ public class RepositorioApiario {
             if (listaApiarios.get(i).getId() == apiarioAtualizado.getId()) {
                 Apiario copia = new Apiario(apiarioAtualizado);
                 listaApiarios.set(i, copia);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Verifica se existe outro apiário com o mesmo nome (excluindo o ID fornecido)
+     */
+    public boolean existeNomeEmOutroApiario(String nome, int idExcluir) {
+        if (nome == null || nome.trim().isEmpty()) {
+            return false;
+        }
+
+        for (Apiario apiario : listaApiarios) {
+            if (apiario.getId() != idExcluir && 
+                apiario.getNome().equalsIgnoreCase(nome.trim())) {
                 return true;
             }
         }

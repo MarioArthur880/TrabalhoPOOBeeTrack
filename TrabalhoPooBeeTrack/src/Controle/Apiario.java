@@ -11,10 +11,21 @@ public class Apiario {
     private int qntCaixas;
 
     /**
-     * Construtor completo
+     * Construtor completo (usado pelo repositório)
      */
     public Apiario(int id, String nome, String raca, String local, int qntCaixas) {
         this.id = id;
+        this.nome = nome;
+        this.raca = raca;
+        this.local = local;
+        this.qntCaixas = qntCaixas;
+    }
+
+    /**
+     * Construtor para novos apiários (sem ID)
+     */
+    public Apiario(String nome, String raca, String local, int qntCaixas) {
+        this.id = 0; // Será atribuído pelo repositório
         this.nome = nome;
         this.raca = raca;
         this.local = local;

@@ -108,14 +108,15 @@ public class UIapiario {
             boolean sucesso = controle.criarApiario(nome, raca, local, qntCaixas);
 
             if (sucesso) {
-                System.out.println("Apiário cadastrado com sucesso!");
+                System.out.println("✓ Apiário cadastrado com sucesso!");
             } else {
-                System.out.println("Dados inválidos. Apiário não cadastrado.");
+                System.out.println("✗ " + controle.getUltimaMensagemErro());
             }
+            
         } catch (NumberFormatException e) {
-            System.out.println("Quantidade de caixas deve ser um número.");
+            System.out.println("✗ Quantidade de caixas deve ser um número válido.");
         } catch (Exception e) {
-            System.out.println("Erro ao cadastrar apiário.");
+            System.out.println("✗ Erro inesperado ao cadastrar apiário.");
         }
     }
 
@@ -141,6 +142,8 @@ public class UIapiario {
                     truncar(a.getLocal(), 20), 
                     a.getQntCaixas());
             }
+            
+            System.out.println("\nTotal: " + apiarios.size() + " apiário(s)");
         }
     }
 
@@ -163,23 +166,29 @@ public class UIapiario {
                 case 2: buscarPorNome(); break;
                 case 3: buscarPorLocal(); break;
                 case 4: buscarPorRaca(); break;
-                default: System.out.println("Opção inválida.");
+                default: System.out.println("✗ Opção inválida.");
             }
+        } catch (NumberFormatException e) {
+            System.out.println("✗ Digite um número válido.");
         } catch (Exception e) {
-            System.out.println("Erro ao buscar.");
+            System.out.println("✗ Erro ao buscar.");
         }
     }
 
     private void buscarPorId() {
-        System.out.print("ID do apiário: ");
-        int id = Integer.parseInt(scanner.nextLine());
-        
-        Apiario apiario = controle.buscarPorId(id);
-        
-        if (apiario != null) {
-            exibirApiario(apiario);
-        } else {
-            System.out.println("Apiário não encontrado.");
+        try {
+            System.out.print("ID do apiário: ");
+            int id = Integer.parseInt(scanner.nextLine());
+            
+            Apiario apiario = controle.buscarPorId(id);
+            
+            if (apiario != null) {
+                exibirApiario(apiario);
+            } else {
+                System.out.println("✗ Apiário não encontrado.");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("✗ ID deve ser um número válido.");
         }
     }
 
@@ -187,12 +196,16 @@ public class UIapiario {
         System.out.print("Nome do apiário: ");
         String nome = scanner.nextLine();
         
-        Apiario apiario = controle.buscarPorNome(nome);
+        List<Apiario> apiarios = controle.buscarTodosPorNome(nome);
         
-        if (apiario != null) {
-            exibirApiario(apiario);
+        if (apiarios.isEmpty()) {
+            System.out.println("✗ Nenhum apiário encontrado com este nome.");
         } else {
-            System.out.println("Apiário não encontrado.");
+            System.out.println("\n✓ " + apiarios.size() + " apiário(s) encontrado(s):");
+            for (Apiario a : apiarios) {
+                exibirApiario(a);
+                System.out.println("---");
+            }
         }
     }
 
@@ -203,9 +216,9 @@ public class UIapiario {
         List<Apiario> apiarios = controle.listarPorLocal(local);
         
         if (apiarios.isEmpty()) {
-            System.out.println("Nenhum apiário encontrado neste local.");
+            System.out.println("✗ Nenhum apiário encontrado neste local.");
         } else {
-            System.out.println("\nApiários encontrados:");
+            System.out.println("\n✓ " + apiarios.size() + " apiário(s) encontrado(s):");
             for (Apiario a : apiarios) {
                 exibirApiario(a);
                 System.out.println("---");
@@ -220,9 +233,9 @@ public class UIapiario {
         List<Apiario> apiarios = controle.listarPorRaca(raca);
         
         if (apiarios.isEmpty()) {
-            System.out.println("Nenhum apiário encontrado com esta raça.");
+            System.out.println("✗ Nenhum apiário encontrado com esta raça.");
         } else {
-            System.out.println("\nApiários encontrados:");
+            System.out.println("\n✓ " + apiarios.size() + " apiário(s) encontrado(s):");
             for (Apiario a : apiarios) {
                 exibirApiario(a);
                 System.out.println("---");
@@ -243,7 +256,7 @@ public class UIapiario {
             Apiario apiario = controle.buscarPorId(id);
 
             if (apiario == null) {
-                System.out.println("Apiário não encontrado.");
+                System.out.println("✗ Apiário não encontrado.");
                 return;
             }
 
@@ -251,25 +264,25 @@ public class UIapiario {
             exibirApiario(apiario);
             System.out.println("\n(Pressione Enter para manter o valor atual)");
 
-            System.out.print("Novo nome: ");
+            System.out.print("Novo nome [" + apiario.getNome() + "]: ");
             String nome = scanner.nextLine();
             if (!nome.trim().isEmpty()) {
                 apiario.setNome(nome);
             }
 
-            System.out.print("Nova raça: ");
+            System.out.print("Nova raça [" + apiario.getRaca() + "]: ");
             String raca = scanner.nextLine();
             if (!raca.trim().isEmpty()) {
                 apiario.setRaca(raca);
             }
 
-            System.out.print("Novo local: ");
+            System.out.print("Novo local [" + apiario.getLocal() + "]: ");
             String local = scanner.nextLine();
             if (!local.trim().isEmpty()) {
                 apiario.setLocal(local);
             }
 
-            System.out.print("Nova quantidade de caixas: ");
+            System.out.print("Nova quantidade de caixas [" + apiario.getQntCaixas() + "]: ");
             String caixasInput = scanner.nextLine();
             if (!caixasInput.trim().isEmpty()) {
                 int qntCaixas = Integer.parseInt(caixasInput);
@@ -279,14 +292,15 @@ public class UIapiario {
             boolean sucesso = controle.atualizar(apiario);
             
             if (sucesso) {
-                System.out.println("Apiário atualizado com sucesso!");
+                System.out.println("✓ Apiário atualizado com sucesso!");
             } else {
-                System.out.println("Erro ao atualizar apiário.");
+                System.out.println("✗ " + controle.getUltimaMensagemErro());
             }
+            
         } catch (NumberFormatException e) {
-            System.out.println("Valor numérico inválido.");
+            System.out.println("✗ Valor numérico inválido.");
         } catch (Exception e) {
-            System.out.println("Erro ao atualizar apiário.");
+            System.out.println("✗ Erro inesperado ao atualizar apiário.");
         }
     }
 
@@ -303,7 +317,7 @@ public class UIapiario {
             Apiario apiario = controle.buscarPorId(id);
             
             if (apiario == null) {
-                System.out.println("Apiário não encontrado.");
+                System.out.println("✗ Apiário não encontrado.");
                 return;
             }
 
@@ -311,19 +325,22 @@ public class UIapiario {
             System.out.print("\nConfirma a remoção? (S/N): ");
             String confirmacao = scanner.nextLine();
 
-            if (confirmacao.equalsIgnoreCase("S")) {
-                if (controle.remover(id)) {
-                    System.out.println("Apiário removido com sucesso!");
+            if (confirmacao.equalsIgnoreCase("S") || confirmacao.equalsIgnoreCase("SIM")) {
+                boolean sucesso = controle.remover(id);
+                
+                if (sucesso) {
+                    System.out.println("✓ Apiário removido com sucesso!");
                 } else {
-                    System.out.println("Erro ao remover apiário.");
+                    System.out.println("✗ " + controle.getUltimaMensagemErro());
                 }
             } else {
                 System.out.println("Remoção cancelada.");
             }
+            
         } catch (NumberFormatException e) {
-            System.out.println("ID inválido.");
+            System.out.println("✗ ID deve ser um número válido.");
         } catch (Exception e) {
-            System.out.println("Erro ao remover apiário.");
+            System.out.println("✗ Erro inesperado ao remover apiário.");
         }
     }
 
@@ -342,6 +359,8 @@ public class UIapiario {
         if (totalApiarios > 0) {
             double mediaCaixas = (double) totalCaixas / totalApiarios;
             System.out.printf("Média de caixas por apiário: %.2f%n", mediaCaixas);
+        } else {
+            System.out.println("Nenhum apiário cadastrado para calcular estatísticas.");
         }
     }
 
