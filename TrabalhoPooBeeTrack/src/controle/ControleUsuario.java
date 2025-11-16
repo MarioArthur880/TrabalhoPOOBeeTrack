@@ -1,84 +1,112 @@
 package controle;
 
-import java.util.ArrayList;
+import repositorio.RepositorioUsuario;
 import java.util.List;
 
 public class ControleUsuario {
-    private List<Pessoa> listaUsuarios = new ArrayList<>();
-    private int proximoId = 1;
+    private RepositorioUsuario repositorio;
+
+    public ControleUsuario(RepositorioUsuario repositorio) {
+        this.repositorio = repositorio;
+    }
 
     public boolean criarUsuario(String nome, String email, String senha, String tipoUsuario) {
-    if (buscarPorEmail(email) != null) return false;
+        if (repositorio.buscarPorEmail(email) != null) {
+            return false;
+        }
 
-    if (listaUsuarios.isEmpty()) {
-        tipoUsuario = "Admin";
+        //primeiro usuário, força o tipo para "Admin"
+        if (repositorio.isEmpty()) {
+            tipoUsuario = "Admin";
+        }
+
+        Pessoa novo = Pessoa.criarUsuario(repositorio.proximoId(), nome, email, senha, tipoUsuario);
+        
+        if (novo != null) {
+            return repositorio.adicionar(novo);
+        }
+        return false;
     }
-
-    Pessoa novo = Pessoa.criarUsuario(proximoId, nome, email, senha, tipoUsuario); //criar função
-    if (novo != null) {
-        listaUsuarios.add(novo);
-        proximoId++;
-        return true;
-    }
-    return false;
-}
-
 
     public List<Pessoa> listar() {
-        return new ArrayList<>(listaUsuarios);
+        return repositorio.listarTodos();
     }
 
     public Pessoa buscarPorEmail(String email) {
-        if (email == null || email.trim().isEmpty()) return null;
-
-        for (Pessoa u : listaUsuarios) {
-            if (u.getEmail().equalsIgnoreCase(email.trim())) { // criar função
-                return u;
-            }
+        if (email == null || email.trim().isEmpty()) {
+            return null;
         }
-        return null;
+        return repositorio.buscarPorEmail(email);
     }
 
     public Pessoa buscarPorNome(String nome) {
-        if (nome == null || nome.trim().isEmpty()) return null;
+        if (nome == null || nome.trim().isEmpty()) {
+            return null;
+        }
+        return repositorio.buscarPorNome(nome);
+    }
 
-        for (Pessoa u : listaUsuarios) {
-            if (u.getNome().equalsIgnoreCase(nome.trim())) {
-                return u;
-            }
+    public Pessoa buscarPorId(int id) {
+        if (id <= 0) {
+            return null;
+        }
+        return repositorio.buscarPorId(id);
+    }
+
+    public boolean remover(String email) {
+        if (email == null || email.trim().isEmpty()) {
+            return false;
+        }
+        return repositorio.removerPorEmail(email);
+    }
+
+    public boolean removerPorId(int id) {
+        if (id <= 0) {
+            return false;
+        }
+        return repositorio.remover(id);
+    }
+
+    public boolean atualizar(Pessoa usuario) {
+        if (usuario == null || usuario.getEmail() == null) {
+            return false;
+        }
+
+        if (usuario.getNome() == null || usuario.getNome().trim().isEmpty()) {
+            return false;
+        }
+        if (usuario.getSenha() == null || usuario.getSenha().trim().isEmpty()) {
+            return false;
+        }
+
+        return repositorio.atualizar(usuario);
+    }
+
+    public List<Pessoa> listarPorTipo(String tipoUsuario) {
+        if (tipoUsuario == null || tipoUsuario.trim().isEmpty()) {
+            return List.of();
+        }
+        return repositorio.listarPorTipo(tipoUsuario);
+    }
+
+    public Pessoa validarLogin(String email, String senha) {
+        Pessoa usuario = repositorio.buscarPorEmail(email);
+        
+        if (usuario != null && usuario.validarSenha(senha)) {
+            return usuario;
         }
         return null;
     }
 
-    public boolean remover(String email) {
-        Pessoa u = buscarPorEmail(email);
-        if (u != null) {
-            return listaUsuarios.remove(u);
-        }
-        return false;
+    public boolean isPrimeiroUsuario() {
+        return repositorio.isEmpty();
     }
 
-    public boolean atualizar(Pessoa novoUsuario) {
-        if (novoUsuario == null || novoUsuario.getEmail() == null) return false;
-
-        for (int i = 0; i < listaUsuarios.size(); i++) {
-            if (listaUsuarios.get(i).getEmail().equalsIgnoreCase(novoUsuario.getEmail())) {
-                listaUsuarios.set(i, novoUsuario);
-                return true;
-            }
-        }
-        return false;
+    public int getTotalUsuarios() {
+        return repositorio.getTotalUsuarios();
     }
 
-    public List<Pessoa> listarPorTipo(String tipoUsuario) {
-        List<Pessoa> resultado = new ArrayList<>();
-        if (tipoUsuario == null || tipoUsuario.trim().isEmpty()) return resultado;
-
-        for (Pessoa u : listaUsuarios) {
-            if (u.getTipoUsuario().equalsIgnoreCase(tipoUsuario.trim())) {
-                resultado.add(u);
-            }
-        }
-        return resultado;
+    public boolean emailJaCadastrado(String email) {
+        return repositorio.buscarPorEmail(email) != null;
     }
 }

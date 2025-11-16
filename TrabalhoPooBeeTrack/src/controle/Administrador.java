@@ -8,5 +8,33 @@ public class Administrador extends Pessoa {
         super(id, nome, email, senha);
         this.nivelAcesso = nivelAcesso;
         this.departamento = departamento;
+        this.setTipoUsuario("Admin");
+    }
+
+    public String getNivelAcesso() {
+        return nivelAcesso;
+    }
+
+    public void setNivelAcesso(String nivelAcesso) {
+        this.nivelAcesso = nivelAcesso;
+    }
+
+    public String getDepartamento() {
+        return departamento;
+    }
+
+    public void setDepartamento(String departamento) {
+        this.departamento = departamento;
+    }
+
+    @Override
+    public String toString() {
+        return "Administrador{" +
+                "id=" + getId() +
+                ", nome='" + getNome() + '\'' +
+                ", email='" + getEmail() + '\'' +
+                ", nivelAcesso='" + nivelAcesso + '\'' +
+                ", departamento='" + departamento + '\'' +
+                '}';
     }
 }

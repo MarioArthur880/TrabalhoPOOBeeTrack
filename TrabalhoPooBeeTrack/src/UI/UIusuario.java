@@ -1,17 +1,16 @@
 package UI;
 
 import controle.ControleUsuario;
-import repositorio.RepositorioUsuario;
-
+import controle.Pessoa;
 import java.util.List;
 import java.util.Scanner;
 
 public class UIusuario {
     private Scanner scanner;
     private ControleUsuario controle;
-    private RepositorioUsuario usuarioLogado;
+    private Pessoa usuarioLogado;
 
-    public UIusuario(Scanner scanner, ControleUsuario controle, RepositorioUsuario usuarioLogado) {
+    public UIusuario(Scanner scanner, ControleUsuario controle, Pessoa usuarioLogado) {
         this.scanner = scanner;
         this.controle = controle;
         this.usuarioLogado = usuarioLogado;
@@ -58,7 +57,9 @@ public class UIusuario {
                 if (admin) cadastrar();
                 else System.out.println("Acesso negado. Apenas administradores podem cadastrar usuários.");
                 break;
-            case 2: listar(); break;
+            case 2: 
+                listar(); 
+                break;
             case 3:
                 if (admin) atualizar();
                 else System.out.println("Acesso negado. Apenas administradores podem atualizar usuários.");
@@ -67,46 +68,45 @@ public class UIusuario {
                 if (admin) remover();
                 else System.out.println("Acesso negado. Apenas administradores podem remover usuários.");
                 break;
-            case 0: break;
-            default: System.out.println("Opção inválida.");
+            case 0: 
+                break;
+            default: 
+                System.out.println("Opção inválida.");
         }
     }
 
-  private void cadastrar() {
-    System.out.println("\n--- CADASTRAR USUÁRIO ---");
+    private void cadastrar() {
+        System.out.println("\n--- CADASTRAR USUÁRIO ---");
 
-    System.out.print("Nome: ");
-    String nome = scanner.nextLine();
+        System.out.print("Nome: ");
+        String nome = scanner.nextLine();
 
-    System.out.print("Email: ");
-    String email = scanner.nextLine();
+        System.out.print("Email: ");
+        String email = scanner.nextLine();
 
-    System.out.print("Senha: ");
-    String senha = scanner.nextLine();
+        System.out.print("Senha: ");
+        String senha = scanner.nextLine();
 
-    System.out.print("Tipo de Usuário (Admin/Apicultor): ");
-    String tipoUsuario = scanner.nextLine();
+        System.out.print("Tipo de Usuário (Admin/Apicultor): ");
+        String tipoUsuario = scanner.nextLine();
 
-    boolean sucesso = controle.criarUsuario(nome, email, senha, tipoUsuario);
+        boolean sucesso = controle.criarUsuario(nome, email, senha, tipoUsuario);
 
-    if (sucesso) {
-        RepositorioUsuario novo = controle.buscarPorEmail(email);
-        if (novo != null && novo.getTipoUsuario().equalsIgnoreCase("Admin") && controle.listar().size() == 1) {
-            System.out.println("Este é o primeiro usuário do sistema e foi cadastrado como Administrador.");
+        if (sucesso) {
+            Pessoa novo = controle.buscarPorEmail(email);
+            if (novo != null && novo.getTipoUsuario().equalsIgnoreCase("Admin") && controle.listar().size() == 1) {
+                System.out.println("Este é o primeiro usuário do sistema e foi cadastrado como Administrador.");
+            } else {
+                System.out.println("Usuário cadastrado com sucesso.");
+            }
         } else {
-            System.out.println("Usuário cadastrado com sucesso.");
+            System.out.println("Dados inválidos ou e-mail já cadastrado.");
         }
-    } else {
-        System.out.println("Dados inválidos ou e-mail já cadastrado.");
     }
-}
-
-
-
 
     private void listar() {
         System.out.println("\n--- LISTA DE USUÁRIOS ---");
-        List<RepositorioUsuario> usuarios = controle.listar();
+        List<Pessoa> usuarios = controle.listar();
 
         if (usuarios.isEmpty()) {
             System.out.println("Nenhum usuário cadastrado.");
@@ -114,14 +114,14 @@ public class UIusuario {
             if (usuarioLogado.getTipoUsuario().equalsIgnoreCase("Admin")) {
                 System.out.printf("%-5s %-20s %-25s %-15s %-15s%n", "ID", "Nome", "Email", "Tipo", "Senha");
                 System.out.println("-------------------------------------------------------------------------------");
-                for (RepositorioUsuario u : usuarios) {
+                for (Pessoa u : usuarios) {
                     System.out.printf("%-5d %-20s %-25s %-15s %-15s%n",
                             u.getId(), u.getNome(), u.getEmail(), u.getTipoUsuario(), u.getSenha());
                 }
             } else {
                 System.out.printf("%-5s %-20s %-25s %-15s%n", "ID", "Nome", "Email", "Tipo");
                 System.out.println("---------------------------------------------------------------");
-                for (RepositorioUsuario u : usuarios) {
+                for (Pessoa u : usuarios) {
                     System.out.printf("%-5d %-20s %-25s %-15s%n",
                             u.getId(), u.getNome(), u.getEmail(), u.getTipoUsuario());
                 }
@@ -134,7 +134,7 @@ public class UIusuario {
         System.out.print("Email do usuário: ");
         String email = scanner.nextLine();
 
-        RepositorioUsuario usuario = controle.buscarPorEmail(email);
+        Pessoa usuario = controle.buscarPorEmail(email);
 
         if (usuario == null) {
             System.out.println("Usuário não encontrado.");
@@ -159,7 +159,12 @@ public class UIusuario {
             usuario.setTipoUsuario(tipo);
         }
 
-        System.out.println("Usuário atualizado com sucesso.");
+        boolean sucesso = controle.atualizar(usuario);
+        if (sucesso) {
+            System.out.println("Usuário atualizado com sucesso.");
+        } else {
+            System.out.println("Erro ao atualizar usuário.");
+        }
     }
 
     private void remover() {

@@ -1,50 +1,189 @@
 package repositorio;
 
 import controle.Pessoa;
-import controle.Apiario;
+import controle.Administrador;
+import controle.Apicultor;
 import java.util.ArrayList;
 import java.util.List;
 
 public class RepositorioUsuario {
     private List<Pessoa> usuarios = new ArrayList<>();
+    private int proximoId = 1;
 
-    public void adicionar(Pessoa usuario) {
-        usuarios.add(usuario);
+    /**
+     * Adiciona um novo usuário ao repositório
+     */
+    public boolean adicionar(Pessoa usuario) {
+        if (usuario == null) return false;
+        
+        Pessoa copia = copiarPessoa(usuario);
+        copia.setId(proximoId);
+        
+        boolean adicionado = usuarios.add(copia);
+        if (adicionado) {
+            proximoId++;
+        }
+        return adicionado;
     }
 
-    public void remover(int id) // throws usuario não encontado exceção
-    {
-        Pessoa usuario = buscar(id);
-        usuarios.remove(usuario);
+    /**
+     * Remove um usuário por ID
+     */
+    public boolean remover(int id) {
+        for (int i = 0; i < usuarios.size(); i++) {
+            if (usuarios.get(i).getId() == id) {
+                usuarios.remove(i);
+                return true;
+            }
+        }
+        return false;
     }
 
-    // public Pessoa buscar(int id) // throws usuario não encontado exceção
-    // {
-    //     // return 
-    //     // usuarios.stream().filter(u -> u.getId() == id).findFirst().orElseThrow(() 
-    //     // -> new usuarionãoencontadoexceção("Usuário não encontrado"));
-    // }
-
-    public List<Pessoa> listar() {
-        return new ArrayList<>(usuarios);
+    /**
+     * Remove um usuário por email
+     */
+    public boolean removerPorEmail(String email) {
+        if (email == null || email.trim().isEmpty()) return false;
+        
+        for (int i = 0; i < usuarios.size(); i++) {
+            if (usuarios.get(i).getEmail().equalsIgnoreCase(email.trim())) {
+                usuarios.remove(i);
+                return true;
+            }
+        }
+        return false;
     }
 
-    public void atualizar(Pessoa usuario) // throws usuario não encontado exceção
-    {
-        Pessoa existente = buscar(usuario.getId());
-        int index = usuarios.indexOf(existente);
-        usuarios.set(index, usuario);
+    /**
+     * Busca um usuário por ID
+     */
+    public Pessoa buscarPorId(int id) {
+        for (Pessoa p : usuarios) {
+            if (p.getId() == id) {
+                return copiarPessoa(p);
+            }
+        }
+        return null;
     }
 
-    private Pessoa buscar(int id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'buscar'");
+    /**
+     * Busca um usuário por email
+     */
+    public Pessoa buscarPorEmail(String email) {
+        if (email == null || email.trim().isEmpty()) return null;
+        
+        for (Pessoa p : usuarios) {
+            if (p.getEmail().equalsIgnoreCase(email.trim())) {
+                return copiarPessoa(p);
+            }
+        }
+        return null;
     }
 
-    public String getTipoUsuario() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getTipoUsuario'");
+    /**
+     * Busca um usuário por nome
+     */
+    public Pessoa buscarPorNome(String nome) {
+        if (nome == null || nome.trim().isEmpty()) return null;
+        
+        for (Pessoa p : usuarios) {
+            if (p.getNome().equalsIgnoreCase(nome.trim())) {
+                return copiarPessoa(p);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Lista todos os usuários
+     */
+    public List<Pessoa> listarTodos() {
+        List<Pessoa> copias = new ArrayList<>();
+        for (Pessoa p : usuarios) {
+            copias.add(copiarPessoa(p));
+        }
+        return copias;
+    }
+
+    /**
+     * Atualiza um usuário existente
+     */
+    public boolean atualizar(Pessoa usuarioAtualizado) {
+        if (usuarioAtualizado == null) return false;
+        
+        for (int i = 0; i < usuarios.size(); i++) {
+            if (usuarios.get(i).getId() == usuarioAtualizado.getId()) {
+                usuarios.set(i, copiarPessoa(usuarioAtualizado));
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Lista usuários por tipo
+     */
+    public List<Pessoa> listarPorTipo(String tipoUsuario) {
+        List<Pessoa> resultado = new ArrayList<>();
+        if (tipoUsuario == null || tipoUsuario.trim().isEmpty()) return resultado;
+        
+        for (Pessoa p : usuarios) {
+            if (p.getTipoUsuario().equalsIgnoreCase(tipoUsuario.trim())) {
+                resultado.add(copiarPessoa(p));
+            }
+        }
+        return resultado;
+    }
+
+    // retorna o próximo ID disponível
+    public int proximoId() {
+        return proximoId;
+    }
+
+    public int getTotalUsuarios() {
+        return usuarios.size();
+    }
+
+    // verifica se existe algum usuário cadastrado
+
+    public boolean isEmpty() {
+        return usuarios.isEmpty();
+    }
+
+
+    // metodo auxiliar para criar copias de pessoa
+
+    private Pessoa copiarPessoa(Pessoa original) {
+        if (original == null) return null;
+        
+        if (original instanceof Administrador) {
+            Administrador admin = (Administrador) original;
+            return new Administrador(
+                admin.getId(), 
+                admin.getNome(), 
+                admin.getEmail(), 
+                admin.getSenha(), 
+                admin.getNivelAcesso(), 
+                admin.getDepartamento()
+            );
+        } else if (original instanceof Apicultor) {
+            Apicultor api = (Apicultor) original;
+            return new Apicultor(
+                api.getId(), 
+                api.getNome(), 
+                api.getEmail(), 
+                api.getSenha(), 
+                api.getEspecialidade(), 
+                api.getAnosExperiencia()
+            );
+        } else {
+            return Pessoa.criarUsuario(
+                original.getId(), 
+                original.getNome(), 
+                original.getEmail(), 
+                original.getSenha(), 
+                original.getTipoUsuario()
+            );
+        }
     }
 }
-
-// Repita para RepositorioApiario (List<Apiario>), RepositorioVisita (List<Visita>), RepositorioProducao (List<Producao>)
