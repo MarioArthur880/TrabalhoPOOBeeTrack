@@ -3,224 +3,245 @@ package controle;
 import repositorio.RepositorioApiario;
 import java.util.List;
 
-/**
- * Classe de controle para gerenciamento de apiários com validações
- */
 public class ControleApiario {
     private RepositorioApiario repositorio;
     private String ultimaMensagemErro;
 
     public ControleApiario(RepositorioApiario repositorio) {
+        if (repositorio == null) {
+            throw new IllegalArgumentException("Repositorio nao pode ser nulo");
+        }
         this.repositorio = repositorio;
         this.ultimaMensagemErro = "";
     }
 
-    /**
-     * Retorna a última mensagem de erro registrada
-     */
     public String getUltimaMensagemErro() {
         return ultimaMensagemErro;
     }
 
-    /**
-     * Cria um novo apiário com validações detalhadas
-     */
     public boolean criarApiario(String nome, String raca, String local, int qntCaixas) {
-        // Validações com mensagens específicas
-        if (nome == null || nome.trim().isEmpty()) {
-            ultimaMensagemErro = "Nome não pode ser vazio.";
-            return false;
-        }
-        
-        if (raca == null || raca.trim().isEmpty()) {
-            ultimaMensagemErro = "Raça não pode ser vazia.";
-            return false;
-        }
-        
-        if (local == null || local.trim().isEmpty()) {
-            ultimaMensagemErro = "Local não pode ser vazio.";
-            return false;
-        }
-        
-        if (qntCaixas <= 0) {
-            ultimaMensagemErro = "Quantidade de caixas deve ser maior que zero.";
-            return false;
-        }
+        try {
+            if (nome == null || nome.trim().isEmpty()) {
+                ultimaMensagemErro = "Nome nao pode ser vazio.";
+                return false;
+            }
+            
+            if (raca == null || raca.trim().isEmpty()) {
+                ultimaMensagemErro = "Raca nao pode ser vazia.";
+                return false;
+            }
+            
+            if (local == null || local.trim().isEmpty()) {
+                ultimaMensagemErro = "Local nao pode ser vazio.";
+                return false;
+            }
+            
+            if (qntCaixas <= 0) {
+                ultimaMensagemErro = "Quantidade de caixas deve ser maior que zero.";
+                return false;
+            }
 
-        // Verifica duplicidade de nome
-        if (repositorio.existeNome(nome)) {
-            ultimaMensagemErro = "Já existe um apiário com este nome.";
-            return false;
-        }
+            if (repositorio.existeNome(nome)) {
+                ultimaMensagemErro = "Ja existe um apiario com este nome.";
+                return false;
+            }
 
-        // Cria o apiário usando o construtor sem ID
-        Apiario novoApiario = new Apiario(nome.trim(), raca.trim(), local.trim(), qntCaixas);
-        
-        boolean adicionado = repositorio.adicionar(novoApiario);
-        
-        if (adicionado) {
-            ultimaMensagemErro = "";
-            return true;
-        } else {
-            ultimaMensagemErro = "Erro ao adicionar apiário ao repositório.";
+            Apiario novoApiario = new Apiario(nome.trim(), raca.trim(), local.trim(), qntCaixas);
+            boolean adicionado = repositorio.adicionar(novoApiario);
+            
+            if (adicionado) {
+                ultimaMensagemErro = "";
+                return true;
+            } else {
+                ultimaMensagemErro = "Erro ao adicionar apiario ao repositorio.";
+                return false;
+            }
+            
+        } catch (Exception e) {
+            System.err.println("Erro ao criar apiario: " + e.getMessage());
+            ultimaMensagemErro = "Erro inesperado ao criar apiario.";
             return false;
         }
     }
 
-    /**
-     * Lista todos os apiários
-     */
     public List<Apiario> listar() {
-        return repositorio.listarTodos();
+        try {
+            return repositorio.listarTodos();
+        } catch (Exception e) {
+            System.err.println("Erro ao listar apiarios: " + e.getMessage());
+            return new java.util.ArrayList<>();
+        }
     }
 
-    /**
-     * Busca um apiário por ID
-     */
     public Apiario buscarPorId(int id) {
-        if (id <= 0) {
+        try {
+            if (id <= 0) {
+                return null;
+            }
+            return repositorio.buscarPorId(id);
+        } catch (Exception e) {
+            System.err.println("Erro ao buscar apiario por ID: " + e.getMessage());
             return null;
         }
-        return repositorio.buscarPorId(id);
     }
 
-    /**
-     * Busca um apiário por nome (retorna o primeiro)
-     */
     public Apiario buscarPorNome(String nome) {
-        if (nome == null || nome.trim().isEmpty()) {
+        try {
+            if (nome == null || nome.trim().isEmpty()) {
+                return null;
+            }
+            return repositorio.buscarPorNome(nome);
+        } catch (Exception e) {
+            System.err.println("Erro ao buscar apiario por nome: " + e.getMessage());
             return null;
         }
-        return repositorio.buscarPorNome(nome);
     }
 
-    /**
-     * Busca todos os apiários com um determinado nome
-     */
     public List<Apiario> buscarTodosPorNome(String nome) {
-        return repositorio.buscarTodosPorNome(nome);
+        try {
+            return repositorio.buscarTodosPorNome(nome);
+        } catch (Exception e) {
+            System.err.println("Erro ao buscar apiarios por nome: " + e.getMessage());
+            return new java.util.ArrayList<>();
+        }
     }
 
-    /**
-     * Remove um apiário por ID
-     */
     public boolean remover(int id) {
-        if (id <= 0) {
-            ultimaMensagemErro = "ID inválido.";
-            return false;
-        }
-        
-        // Verifica se o apiário existe
-        Apiario apiario = repositorio.buscarPorId(id);
-        if (apiario == null) {
-            ultimaMensagemErro = "Apiário não encontrado.";
-            return false;
-        }
-        
-        boolean removido = repositorio.remover(id);
-        
-        if (removido) {
-            ultimaMensagemErro = "";
-            return true;
-        } else {
-            ultimaMensagemErro = "Erro ao remover apiário.";
+        try {
+            if (id <= 0) {
+                ultimaMensagemErro = "ID invalido.";
+                return false;
+            }
+            
+            Apiario apiario = repositorio.buscarPorId(id);
+            if (apiario == null) {
+                ultimaMensagemErro = "Apiario nao encontrado.";
+                return false;
+            }
+            
+            boolean removido = repositorio.remover(id);
+            
+            if (removido) {
+                ultimaMensagemErro = "";
+                return true;
+            } else {
+                ultimaMensagemErro = "Erro ao remover apiario.";
+                return false;
+            }
+            
+        } catch (Exception e) {
+            System.err.println("Erro ao remover apiario: " + e.getMessage());
+            ultimaMensagemErro = "Erro inesperado ao remover apiario.";
             return false;
         }
     }
 
-    /**
-     * Atualiza um apiário existente
-     */
     public boolean atualizar(Apiario apiario) {
-        if (apiario == null) {
-            ultimaMensagemErro = "Apiário não pode ser nulo.";
-            return false;
-        }
-        
-        // Validações
-        if (apiario.getNome() == null || apiario.getNome().trim().isEmpty()) {
-            ultimaMensagemErro = "Nome não pode ser vazio.";
-            return false;
-        }
-        
-        if (apiario.getRaca() == null || apiario.getRaca().trim().isEmpty()) {
-            ultimaMensagemErro = "Raça não pode ser vazia.";
-            return false;
-        }
-        
-        if (apiario.getLocal() == null || apiario.getLocal().trim().isEmpty()) {
-            ultimaMensagemErro = "Local não pode ser vazio.";
-            return false;
-        }
-        
-        if (apiario.getQntCaixas() <= 0) {
-            ultimaMensagemErro = "Quantidade de caixas deve ser maior que zero.";
-            return false;
-        }
+        try {
+            if (apiario == null) {
+                ultimaMensagemErro = "Apiario nao pode ser nulo.";
+                return false;
+            }
+            
+            if (apiario.getNome() == null || apiario.getNome().trim().isEmpty()) {
+                ultimaMensagemErro = "Nome nao pode ser vazio.";
+                return false;
+            }
+            
+            if (apiario.getRaca() == null || apiario.getRaca().trim().isEmpty()) {
+                ultimaMensagemErro = "Raca nao pode ser vazia.";
+                return false;
+            }
+            
+            if (apiario.getLocal() == null || apiario.getLocal().trim().isEmpty()) {
+                ultimaMensagemErro = "Local nao pode ser vazio.";
+                return false;
+            }
+            
+            if (apiario.getQntCaixas() <= 0) {
+                ultimaMensagemErro = "Quantidade de caixas deve ser maior que zero.";
+                return false;
+            }
 
-        // Verifica se o apiário existe
-        Apiario existente = repositorio.buscarPorId(apiario.getId());
-        if (existente == null) {
-            ultimaMensagemErro = "Apiário não encontrado.";
-            return false;
-        }
+            Apiario existente = repositorio.buscarPorId(apiario.getId());
+            if (existente == null) {
+                ultimaMensagemErro = "Apiario nao encontrado.";
+                return false;
+            }
 
-        // Verifica se o novo nome já existe em outro apiário
-        if (repositorio.existeNomeEmOutroApiario(apiario.getNome(), apiario.getId())) {
-            ultimaMensagemErro = "Já existe outro apiário com este nome.";
-            return false;
-        }
+            if (repositorio.existeNomeEmOutroApiario(apiario.getNome(), apiario.getId())) {
+                ultimaMensagemErro = "Ja existe outro apiario com este nome.";
+                return false;
+            }
 
-        boolean atualizado = repositorio.atualizar(apiario);
-        
-        if (atualizado) {
-            ultimaMensagemErro = "";
-            return true;
-        } else {
-            ultimaMensagemErro = "Erro ao atualizar apiário.";
+            boolean atualizado = repositorio.atualizar(apiario);
+            
+            if (atualizado) {
+                ultimaMensagemErro = "";
+                return true;
+            } else {
+                ultimaMensagemErro = "Erro ao atualizar apiario.";
+                return false;
+            }
+            
+        } catch (Exception e) {
+            System.err.println("Erro ao atualizar apiario: " + e.getMessage());
+            ultimaMensagemErro = "Erro inesperado ao atualizar apiario.";
             return false;
         }
     }
 
-    /**
-     * Lista apiários de um local específico
-     */
     public List<Apiario> listarPorLocal(String local) {
-        return repositorio.listarPorLocal(local);
+        try {
+            return repositorio.listarPorLocal(local);
+        } catch (Exception e) {
+            System.err.println("Erro ao listar apiarios por local: " + e.getMessage());
+            return new java.util.ArrayList<>();
+        }
     }
 
-    /**
-     * Lista apiários de uma raça específica
-     */
     public List<Apiario> listarPorRaca(String raca) {
-        return repositorio.listarPorRaca(raca);
+        try {
+            return repositorio.listarPorRaca(raca);
+        } catch (Exception e) {
+            System.err.println("Erro ao listar apiarios por raca: " + e.getMessage());
+            return new java.util.ArrayList<>();
+        }
     }
 
-    /**
-     * Obtém o total de caixas de todos os apiários
-     */
     public int getTotalCaixas() {
-        return repositorio.calcularTotalCaixas();
+        try {
+            return repositorio.calcularTotalCaixas();
+        } catch (Exception e) {
+            System.err.println("Erro ao calcular total de caixas: " + e.getMessage());
+            return 0;
+        }
     }
 
-    /**
-     * Obtém o total de caixas de um local específico
-     */
     public int getTotalCaixasPorLocal(String local) {
-        return repositorio.calcularTotalCaixasPorLocal(local);
+        try {
+            return repositorio.calcularTotalCaixasPorLocal(local);
+        } catch (Exception e) {
+            System.err.println("Erro ao calcular caixas por local: " + e.getMessage());
+            return 0;
+        }
     }
 
-    /**
-     * Obtém o total de apiários cadastrados
-     */
     public int getTotalApiarios() {
-        return repositorio.getTotalApiarios();
+        try {
+            return repositorio.getTotalApiarios();
+        } catch (Exception e) {
+            System.err.println("Erro ao obter total de apiarios: " + e.getMessage());
+            return 0;
+        }
     }
 
-    /**
-     * Verifica se existe um apiário com o nome especificado
-     */
     public boolean existeNome(String nome) {
-        return repositorio.existeNome(nome);
+        try {
+            return repositorio.existeNome(nome);
+        } catch (Exception e) {
+            System.err.println("Erro ao verificar existencia de nome: " + e.getMessage());
+            return false;
+        }
     }
 }
