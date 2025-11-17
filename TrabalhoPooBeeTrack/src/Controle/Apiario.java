@@ -1,18 +1,10 @@
 package controle;
-
-/**
- * Classe que representa um apiário
- */
 public class Apiario {
     private int id;
     private String nome;
     private String raca;
     private String local;
     private int qntCaixas;
-
-    /**
-     * Construtor completo (usado pelo repositório)
-     */
     public Apiario(int id, String nome, String raca, String local, int qntCaixas) {
         this.id = id;
         this.nome = nome;
@@ -20,21 +12,14 @@ public class Apiario {
         this.local = local;
         this.qntCaixas = qntCaixas;
     }
-
-    /**
-     * Construtor para novos apiários (sem ID)
-     */
     public Apiario(String nome, String raca, String local, int qntCaixas) {
-        this.id = 0; // Será atribuído pelo repositório
+        this.id = 0; 
         this.nome = nome;
         this.raca = raca;
         this.local = local;
         this.qntCaixas = qntCaixas;
     }
 
-    /**
-     * Construtor de cópia
-     */
     public Apiario(Apiario outro) {
         this.id = outro.id;
         this.nome = outro.nome;
@@ -43,7 +28,6 @@ public class Apiario {
         this.qntCaixas = outro.qntCaixas;
     }
 
-    // Getters
     public int getId() {
         return id;
     }
@@ -64,7 +48,6 @@ public class Apiario {
         return qntCaixas;
     }
 
-    // Setters
     public void setId(int id) {
         this.id = id;
     }

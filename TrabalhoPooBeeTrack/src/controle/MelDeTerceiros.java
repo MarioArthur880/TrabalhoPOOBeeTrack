@@ -7,11 +7,9 @@ public class MelDeTerceiros {
     private double pesoDepois;
     private String data;
 
-    // Construtor padrão
     public MelDeTerceiros() {
     }
 
-    // Construtor com parâmetros
     public MelDeTerceiros(int id, String produtor, double pesoAntes, double pesoDepois, String data) {
         this.id = id;
         this.produtor = produtor;
@@ -20,7 +18,6 @@ public class MelDeTerceiros {
         this.data = data;
     }
 
-    // Construtor de cópia
     public MelDeTerceiros(MelDeTerceiros outro) {
         this.id = outro.id;
         this.produtor = outro.produtor;
@@ -29,7 +26,6 @@ public class MelDeTerceiros {
         this.data = outro.data;
     }
 
-    // Getters e Setters
     public int getId() {
         return id;
     }
@@ -70,12 +66,10 @@ public class MelDeTerceiros {
         this.data = data;
     }
 
-    // Método auxiliar (opcional): calcular diferença de peso
     public double getDiferencaPeso() {
         return pesoAntes - pesoDepois;
     }
 
-    // toString (opcional, mas útil para debug)
     @Override
     public String toString() {
         return "MelDeTerceiros{" +

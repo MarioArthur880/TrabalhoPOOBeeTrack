@@ -24,13 +24,11 @@ public class UIprincipal {
 
     public UIprincipal() {
         try {
-            // Inicializa os repositorios
             RepositorioUsuario repoUsuario = new RepositorioUsuario();
             RepositorioApiario repoApiario = new RepositorioApiario();
             RepositorioVisita repoVisita = new RepositorioVisita();
             RepositorioMelDeTerceiros repoMelDeTerceiros = new RepositorioMelDeTerceiros();
-            
-            // Inicializa os controles com seus repositorios
+
             this.controleUsuario = new ControleUsuario(repoUsuario);
             this.controleApiario = new ControleApiario(repoApiario);
             this.controleVisita = new ControleVisita(repoVisita);

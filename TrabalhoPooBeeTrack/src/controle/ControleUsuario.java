@@ -18,19 +18,12 @@ public class ControleUsuario {
         this.ultimaMensagemErro = "";
     }
 
-    /**
-     * Retorna a ultima mensagem de erro registrada
-     */
     public String getUltimaMensagemErro() {
         return ultimaMensagemErro;
     }
 
-    /**
-     * Cria um novo usuario com validacoes detalhadas
-     */
     public boolean criarUsuario(String nome, String email, String senha, String tipoUsuario) {
         try {
-            // Validacoes com mensagens especificas
             if (nome == null || nome.trim().isEmpty()) {
                 ultimaMensagemErro = "Nome nao pode ser vazio.";
                 return false;
@@ -61,13 +54,11 @@ public class ControleUsuario {
                 return false;
             }
 
-            // Verifica duplicidade de email
             if (repositorio.buscarPorEmail(email) != null) {
                 ultimaMensagemErro = "Ja existe um usuario com este email.";
                 return false;
             }
 
-            // Cria o usuario usando o factory method
             Pessoa novoUsuario = Pessoa.criarUsuario(0, nome.trim(), email.trim(), senha, tipoUsuario.trim());
             
             if (novoUsuario == null) {
@@ -92,9 +83,6 @@ public class ControleUsuario {
         }
     }
 
-    /**
-     * Lista todos os usuarios
-     */
     public List<Pessoa> listar() {
         try {
             return repositorio.listarTodos();
@@ -104,9 +92,6 @@ public class ControleUsuario {
         }
     }
 
-    /**
-     * Busca um usuario por ID
-     */
     public Pessoa buscarPorId(int id) {
         try {
             if (id <= 0) {
@@ -119,9 +104,6 @@ public class ControleUsuario {
         }
     }
 
-    /**
-     * Busca um usuario por email
-     */
     public Pessoa buscarPorEmail(String email) {
         try {
             if (email == null || email.trim().isEmpty()) {
@@ -134,9 +116,6 @@ public class ControleUsuario {
         }
     }
 
-    /**
-     * Busca um usuario por nome
-     */
     public Pessoa buscarPorNome(String nome) {
         try {
             if (nome == null || nome.trim().isEmpty()) {
@@ -149,17 +128,13 @@ public class ControleUsuario {
         }
     }
 
-    /**
-     * Remove um usuario por email
-     */
     public boolean remover(String email) {
         try {
             if (email == null || email.trim().isEmpty()) {
                 ultimaMensagemErro = "Email nao pode ser vazio.";
                 return false;
             }
-            
-            // Verifica se o usuario existe
+
             Pessoa usuario = repositorio.buscarPorEmail(email);
             if (usuario == null) {
                 ultimaMensagemErro = "Usuario nao encontrado.";
@@ -183,17 +158,12 @@ public class ControleUsuario {
         }
     }
 
-    /**
-     * Remove um usuario por ID
-     */
     public boolean removerPorId(int id) {
         try {
             if (id <= 0) {
                 ultimaMensagemErro = "ID invalido.";
                 return false;
             }
-            
-            // Verifica se o usuario existe
             Pessoa usuario = repositorio.buscarPorId(id);
             if (usuario == null) {
                 ultimaMensagemErro = "Usuario nao encontrado.";
@@ -217,17 +187,12 @@ public class ControleUsuario {
         }
     }
 
-    /**
-     * Atualiza um usuario existente
-     */
     public boolean atualizar(Pessoa usuario) {
         try {
             if (usuario == null) {
                 ultimaMensagemErro = "Usuario nao pode ser nulo.";
                 return false;
             }
-            
-            // Validacoes
             if (usuario.getNome() == null || usuario.getNome().trim().isEmpty()) {
                 ultimaMensagemErro = "Nome nao pode ser vazio.";
                 return false;
@@ -252,15 +217,11 @@ public class ControleUsuario {
                 ultimaMensagemErro = "Senha deve ter pelo menos 4 caracteres.";
                 return false;
             }
-
-            // Verifica se o usuario existe
             Pessoa existente = repositorio.buscarPorId(usuario.getId());
             if (existente == null) {
                 ultimaMensagemErro = "Usuario nao encontrado.";
                 return false;
             }
-
-            // Verifica se o novo email ja existe em outro usuario
             Pessoa outroComEmail = repositorio.buscarPorEmail(usuario.getEmail());
             if (outroComEmail != null && outroComEmail.getId() != usuario.getId()) {
                 ultimaMensagemErro = "Ja existe outro usuario com este email.";
@@ -284,9 +245,6 @@ public class ControleUsuario {
         }
     }
 
-    /**
-     * Lista usuarios por tipo
-     */
     public List<Pessoa> listarPorTipo(String tipoUsuario) {
         try {
             return repositorio.listarPorTipo(tipoUsuario);
@@ -296,9 +254,6 @@ public class ControleUsuario {
         }
     }
 
-    /**
-     * Obtem o total de usuarios cadastrados
-     */
     public int getTotalUsuarios() {
         try {
             return repositorio.getTotalUsuarios();
@@ -308,9 +263,6 @@ public class ControleUsuario {
         }
     }
 
-    /**
-     * Verifica se existe um usuario com o email especificado
-     */
     public boolean existeEmail(String email) {
         try {
             return repositorio.buscarPorEmail(email) != null;
@@ -320,9 +272,6 @@ public class ControleUsuario {
         }
     }
 
-    /**
-     * Valida formato de email
-     */
     private boolean validarEmail(String email) {
         try {
             if (email == null) return false;

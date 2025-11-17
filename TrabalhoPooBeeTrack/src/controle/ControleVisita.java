@@ -15,7 +15,6 @@ public class ControleVisita {
 
     public boolean criarVisita(String data, Apiario apiario, int colheita, String tipoVisita) {
         try {
-            // Validacoes de regras de negocio
             if (data == null || data.trim().isEmpty()) {
                 return false;
             }
@@ -79,8 +78,6 @@ public class ControleVisita {
             if (visita == null) {
                 return false;
             }
-            
-            // Validacoes de regras de negocio
             if (visita.getData() == null || visita.getData().trim().isEmpty()) {
                 return false;
             }
@@ -116,10 +113,6 @@ public class ControleVisita {
             return new java.util.ArrayList<>();
         }
     }
-
-    /**
-     * Valida o formato da data (dd/mm/aaaa)
-     */
     private boolean validarFormatoData(String data) {
         try {
             if (data == null || data.trim().isEmpty()) {
@@ -145,8 +138,6 @@ public class ControleVisita {
             if (ano < 1900 || ano > 2100) {
                 return false;
             }
-            
-            // Validacao simples de dias por mes
             if ((mes == 4 || mes == 6 || mes == 9 || mes == 11) && dia > 30) {
                 return false;
             }

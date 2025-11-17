@@ -10,9 +10,6 @@ public class RepositorioUsuario {
     private List<Pessoa> usuarios = new ArrayList<>();
     private int proximoId = 1;
 
-    /**
-     * Adiciona um novo usuário ao repositório
-     */
     public boolean adicionar(Pessoa usuario) {
         if (usuario == null) return false;
         
@@ -26,9 +23,6 @@ public class RepositorioUsuario {
         return adicionado;
     }
 
-    /**
-     * Remove um usuário por ID
-     */
     public boolean remover(int id) {
         for (int i = 0; i < usuarios.size(); i++) {
             if (usuarios.get(i).getId() == id) {
@@ -39,9 +33,6 @@ public class RepositorioUsuario {
         return false;
     }
 
-    /**
-     * Remove um usuário por email
-     */
     public boolean removerPorEmail(String email) {
         if (email == null || email.trim().isEmpty()) return false;
         
@@ -54,9 +45,6 @@ public class RepositorioUsuario {
         return false;
     }
 
-    /**
-     * Busca um usuário por ID
-     */
     public Pessoa buscarPorId(int id) {
         for (Pessoa p : usuarios) {
             if (p.getId() == id) {
@@ -66,9 +54,6 @@ public class RepositorioUsuario {
         return null;
     }
 
-    /**
-     * Busca um usuário por email
-     */
     public Pessoa buscarPorEmail(String email) {
         if (email == null || email.trim().isEmpty()) return null;
         
@@ -80,9 +65,6 @@ public class RepositorioUsuario {
         return null;
     }
 
-    /**
-     * Busca um usuário por nome
-     */
     public Pessoa buscarPorNome(String nome) {
         if (nome == null || nome.trim().isEmpty()) return null;
         
@@ -94,9 +76,6 @@ public class RepositorioUsuario {
         return null;
     }
 
-    /**
-     * Lista todos os usuários
-     */
     public List<Pessoa> listarTodos() {
         List<Pessoa> copias = new ArrayList<>();
         for (Pessoa p : usuarios) {
@@ -105,9 +84,6 @@ public class RepositorioUsuario {
         return copias;
     }
 
-    /**
-     * Atualiza um usuário existente
-     */
     public boolean atualizar(Pessoa usuarioAtualizado) {
         if (usuarioAtualizado == null) return false;
         
@@ -120,9 +96,6 @@ public class RepositorioUsuario {
         return false;
     }
 
-    /**
-     * Lista usuários por tipo
-     */
     public List<Pessoa> listarPorTipo(String tipoUsuario) {
         List<Pessoa> resultado = new ArrayList<>();
         if (tipoUsuario == null || tipoUsuario.trim().isEmpty()) return resultado;
@@ -135,7 +108,6 @@ public class RepositorioUsuario {
         return resultado;
     }
 
-    // retorna o próximo ID disponível
     public int proximoId() {
         return proximoId;
     }
@@ -144,14 +116,9 @@ public class RepositorioUsuario {
         return usuarios.size();
     }
 
-    // verifica se existe algum usuário cadastrado
-
     public boolean isEmpty() {
         return usuarios.isEmpty();
     }
-
-
-    // metodo auxiliar para criar copias de pessoa
 
     private Pessoa copiarPessoa(Pessoa original) {
         if (original == null) return null;
