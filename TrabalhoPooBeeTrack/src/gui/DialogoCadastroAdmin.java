@@ -1,0 +1,142 @@
+
+package gui;
+
+import controle.ControleUsuario;
+import controle.Pessoa;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+class DialogoCadastroAdmin extends JDialog {
+    private ControleUsuario controleUsuario;
+    private JTextField txtNome;
+    private JTextField txtEmail;
+    private JPasswordField txtSenha;
+    private JPasswordField txtConfirmarSenha;
+    
+    public DialogoCadastroAdmin(JFrame parent, ControleUsuario controleUsuario) {
+        super(parent, "Cadastro de Administrador", true);
+        this.controleUsuario = controleUsuario;
+        inicializarComponentes();
+    }
+    
+    private void inicializarComponentes() {
+        setSize(400, 350);
+        setLocationRelativeTo(getParent());
+        setResizable(false);
+        
+        JPanel painelPrincipal = new JPanel(new BorderLayout(10, 10));
+        painelPrincipal.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        
+        // Título
+        JLabel lblTitulo = new JLabel("Primeiro Acesso - Cadastro de Administrador", SwingConstants.CENTER);
+        lblTitulo.setFont(new Font("Arial", Font.BOLD, 14));
+        painelPrincipal.add(lblTitulo, BorderLayout.NORTH);
+        
+        // Formulário
+        JPanel painelForm = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(5, 5, 5, 5);
+        
+        // Nome
+        gbc.gridx = 0; gbc.gridy = 0; gbc.weightx = 0.3;
+        painelForm.add(new JLabel("Nome:"), gbc);
+        
+        txtNome = new JTextField();
+        gbc.gridx = 1; gbc.gridy = 0; gbc.weightx = 0.7;
+        painelForm.add(txtNome, gbc);
+        
+        // Email
+        gbc.gridx = 0; gbc.gridy = 1; gbc.weightx = 0.3;
+        painelForm.add(new JLabel("Email:"), gbc);
+        
+        txtEmail = new JTextField();
+        gbc.gridx = 1; gbc.gridy = 1; gbc.weightx = 0.7;
+        painelForm.add(txtEmail, gbc);
+        
+        // Senha
+        gbc.gridx = 0; gbc.gridy = 2; gbc.weightx = 0.3;
+        painelForm.add(new JLabel("Senha:"), gbc);
+        
+        txtSenha = new JPasswordField();
+        gbc.gridx = 1; gbc.gridy = 2; gbc.weightx = 0.7;
+        painelForm.add(txtSenha, gbc);
+        
+        // Confirmar Senha
+        gbc.gridx = 0; gbc.gridy = 3; gbc.weightx = 0.3;
+        painelForm.add(new JLabel("Confirmar Senha:"), gbc);
+        
+        txtConfirmarSenha = new JPasswordField();
+        gbc.gridx = 1; gbc.gridy = 3; gbc.weightx = 0.7;
+        painelForm.add(txtConfirmarSenha, gbc);
+        
+        painelPrincipal.add(painelForm, BorderLayout.CENTER);
+        
+        // Botões
+        JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        
+        JButton btnCadastrar = new JButton("Cadastrar");
+        btnCadastrar.setPreferredSize(new Dimension(100, 30));
+        btnCadastrar.setBackground(new Color(76, 175, 80));
+        btnCadastrar.setForeground(Color.WHITE);
+        btnCadastrar.setFocusPainted(false);
+        btnCadastrar.addActionListener(e -> cadastrar());
+        painelBotoes.add(btnCadastrar);
+        
+        JButton btnCancelar = new JButton("Cancelar");
+        btnCancelar.setPreferredSize(new Dimension(100, 30));
+        btnCancelar.addActionListener(e -> dispose());
+        painelBotoes.add(btnCancelar);
+        
+        painelPrincipal.add(painelBotoes, BorderLayout.SOUTH);
+        
+        add(painelPrincipal);
+    }
+    
+    private void cadastrar() {
+        String nome = txtNome.getText().trim();
+        String email = txtEmail.getText().trim();
+        String senha = new String(txtSenha.getPassword());
+        String confirmarSenha = new String(txtConfirmarSenha.getPassword());
+        
+        if (nome.isEmpty() || email.isEmpty() || senha.isEmpty()) {
+            JOptionPane.showMessageDialog(this, 
+                "Todos os campos são obrigatórios.", 
+                "Erro", 
+                JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        if (!senha.equals(confirmarSenha)) {
+            JOptionPane.showMessageDialog(this, 
+                "As senhas não coincidem.", 
+                "Erro", 
+                JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        if (senha.length() < 4) {
+            JOptionPane.showMessageDialog(this, 
+                "A senha deve ter pelo menos 4 caracteres.", 
+                "Erro", 
+                JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        boolean sucesso = controleUsuario.criarUsuario(nome, email, senha, "Admin");
+        
+        if (sucesso) {
+            JOptionPane.showMessageDialog(this, 
+                "Administrador cadastrado com sucesso!\nAgora você pode fazer login.", 
+                "Sucesso", 
+                JOptionPane.INFORMATION_MESSAGE);
+            dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, 
+                "Erro ao cadastrar: " + controleUsuario.getUltimaMensagemErro(), 
+                "Erro", 
+                JOptionPane.ERROR_MESSAGE);
+        }
+    }
+}
