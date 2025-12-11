@@ -87,28 +87,30 @@ public class TelaLogin extends JFrame {
         JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         painelBotoes.setBackground(new Color(245, 245, 245));
         
-       btnLogin = new JButton("Entrar");
-btnLogin.setPreferredSize(new Dimension(120, 35));
-btnLogin.setBackground(new Color(46, 125, 50));  // Verde escuro
-btnLogin.setForeground(Color.WHITE);           // <-- E AQUI
-btnLogin.setFocusPainted(false);
-btnLogin.setFont(new Font("Arial", Font.BOLD, 12));
-btnLogin.addActionListener(e -> realizarLogin());
-painelBotoes.add(btnLogin);
+        btnLogin = new JButton("Entrar");
+        btnLogin.setPreferredSize(new Dimension(120, 35));
+        btnLogin.setBackground(new Color(46, 125, 50));
+        btnLogin.setForeground(new Color(51, 51, 51));
+        btnLogin.setFocusPainted(false);
+        btnLogin.setFont(new Font("Arial", Font.BOLD, 12));
+        btnLogin.setOpaque(true);
+        btnLogin.setBorderPainted(false);
+        btnLogin.addActionListener(e -> realizarLogin());
+        painelBotoes.add(btnLogin);
 
-// Botão de cadastro só aparece se não houver usuários
-if (controleUsuario.listar().isEmpty()) {
-   btnCadastrar = new JButton("Cadastrar Admin");
-btnCadastrar.setPreferredSize(new Dimension(120, 35));
-btnCadastrar.setBackground(new Color(21, 101, 192));  // Azul escuro
-btnCadastrar.setForeground(Color.WHITE);             // <-- E AQUI
-btnCadastrar.setFocusPainted(false);
-btnCadastrar.setFont(new Font("Arial", Font.BOLD, 12));
-btnCadastrar.addActionListener(e -> abrirTelaCadastro());
-painelBotoes.add(btnCadastrar);
-
-}
-
+        // Botão de cadastro só aparece se não houver usuários
+        if (controleUsuario.listar().isEmpty()) {
+            btnCadastrar = new JButton("Cadastrar Admin");
+            btnCadastrar.setPreferredSize(new Dimension(140, 35));
+            btnCadastrar.setBackground(new Color(21, 101, 192));
+            btnCadastrar.setForeground(new Color(51, 51, 51));
+            btnCadastrar.setFocusPainted(false);
+            btnCadastrar.setFont(new Font("Arial", Font.BOLD, 12));
+            btnCadastrar.setOpaque(true);
+            btnCadastrar.setBorderPainted(false);
+            btnCadastrar.addActionListener(e -> abrirTelaCadastro());
+            painelBotoes.add(btnCadastrar);
+        }
         
         painelPrincipal.add(painelBotoes, BorderLayout.SOUTH);
         

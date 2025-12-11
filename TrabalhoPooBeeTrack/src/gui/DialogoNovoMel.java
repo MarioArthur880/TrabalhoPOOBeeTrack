@@ -54,7 +54,7 @@ class DialogoNovoMel extends JDialog {
         JButton btnSalvar = new JButton("Salvar");
         btnSalvar.setPreferredSize(new Dimension(100, 30));
         btnSalvar.setBackground(new Color(255, 193, 7));
-        btnSalvar.setForeground(new Color(51, 51, 51)); // Texto escuro
+        btnSalvar.setForeground(new Color(51, 51, 51));
         btnSalvar.setFocusPainted(false);
         btnSalvar.addActionListener(e -> salvar());
         painelBotoes.add(btnSalvar);
@@ -62,7 +62,7 @@ class DialogoNovoMel extends JDialog {
         JButton btnCancelar = new JButton("Cancelar");
         btnCancelar.setPreferredSize(new Dimension(100, 30));
         btnCancelar.setBackground(new Color(158, 158, 158));
-        btnCancelar.setForeground(Color.WHITE);
+        btnCancelar.setForeground(new Color(51, 51, 51));
         btnCancelar.setFocusPainted(false);
         btnCancelar.addActionListener(e -> dispose());
         painelBotoes.add(btnCancelar);

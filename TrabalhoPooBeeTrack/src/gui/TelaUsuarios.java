@@ -34,7 +34,7 @@ public class TelaUsuarios extends JDialog {
         
         JLabel lblTitulo = new JLabel("Gerenciamento de Usuários");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 20));
-        lblTitulo.setForeground(Color.WHITE);
+        lblTitulo.setForeground(new Color(51, 51, 51));
         painelHeader.add(lblTitulo);
         
         painelPrincipal.add(painelHeader, BorderLayout.NORTH);
@@ -51,7 +51,7 @@ public class TelaUsuarios extends JDialog {
         
         JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 5));
         
-        JButton btnNovo = criarBotao("Novo Usuário", new Color(76, 175, 80));
+        JButton btnNovo = criarBotao("Novo Usuário", new Color(46, 125, 50));
         btnNovo.addActionListener(e -> novoUsuario());
         painelBotoes.add(btnNovo);
         
@@ -70,9 +70,11 @@ public class TelaUsuarios extends JDialog {
     private JButton criarBotao(String texto, Color cor) {
         JButton btn = new JButton(texto);
         btn.setBackground(cor);
-        btn.setForeground(Color.WHITE);
+        btn.setForeground(new Color(51, 51, 51));
         btn.setFocusPainted(false);
         btn.setFont(new Font("Arial", Font.BOLD, 11));
+        btn.setOpaque(true);
+        btn.setBorderPainted(false);
         return btn;
     }
     

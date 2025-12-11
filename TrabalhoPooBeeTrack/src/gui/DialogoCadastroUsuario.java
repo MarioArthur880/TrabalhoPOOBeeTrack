@@ -63,8 +63,7 @@ class DialogoCadastroUsuario extends JDialog {
         JButton btnSalvar = new JButton("Salvar");
         btnSalvar.setPreferredSize(new Dimension(100, 30));
         btnSalvar.setBackground(new Color(46, 125, 50)); // Mesmo verde do login
-        btnSalvar.setForeground(Color.WHITE);
-
+        btnSalvar.setForeground(new Color(51, 51, 51));
         btnSalvar.setFocusPainted(false);
         btnSalvar.addActionListener(e -> salvar());
         painelBotoes.add(btnSalvar);
@@ -72,7 +71,7 @@ class DialogoCadastroUsuario extends JDialog {
         JButton btnCancelar = new JButton("Cancelar");
         btnCancelar.setPreferredSize(new Dimension(100, 30));
         btnCancelar.setBackground(new Color(183, 28, 28)); // Vermelho escuro
-        btnCancelar.setForeground(Color.WHITE);
+        btnCancelar.setForeground(new Color(51, 51, 51));
         btnCancelar.setFocusPainted(false);
         btnCancelar.addActionListener(e -> dispose());
         painelBotoes.add(btnCancelar);

@@ -1,4 +1,3 @@
-
 package gui;
 
 import controle.ControleUsuario;
@@ -78,14 +77,19 @@ class DialogoCadastroAdmin extends JDialog {
         
         JButton btnCadastrar = new JButton("Cadastrar");
         btnCadastrar.setPreferredSize(new Dimension(100, 30));
-        btnCadastrar.setBackground(new Color(76, 175, 80));
-        btnCadastrar.setForeground(Color.WHITE);
+        btnCadastrar.setBackground(new Color(46, 125, 50));
+        btnCadastrar.setForeground(new Color(51, 51, 51));
         btnCadastrar.setFocusPainted(false);
+        btnCadastrar.setFont(new Font("Arial", Font.BOLD, 12));
         btnCadastrar.addActionListener(e -> cadastrar());
         painelBotoes.add(btnCadastrar);
         
         JButton btnCancelar = new JButton("Cancelar");
         btnCancelar.setPreferredSize(new Dimension(100, 30));
+        btnCancelar.setBackground(new Color(158, 158, 158));
+        btnCancelar.setForeground(new Color(51, 51, 51));
+        btnCancelar.setFocusPainted(false);
+        btnCancelar.setFont(new Font("Arial", Font.BOLD, 12));
         btnCancelar.addActionListener(e -> dispose());
         painelBotoes.add(btnCancelar);
         

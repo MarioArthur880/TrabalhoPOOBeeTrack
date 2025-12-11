@@ -29,12 +29,12 @@ class TelaVisitas extends JDialog {
         painelPrincipal.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         
         JPanel painelHeader = new JPanel(new BorderLayout());
-        painelHeader.setBackground(new Color(76, 175, 80));
+        painelHeader.setBackground(new Color(46, 125, 50));
         painelHeader.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
         
         JLabel lblTitulo = new JLabel("Gerenciamento de Visitas");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 20));
-        lblTitulo.setForeground(Color.WHITE);
+        lblTitulo.setForeground(new Color(51, 51, 51));
         painelHeader.add(lblTitulo);
         painelPrincipal.add(painelHeader, BorderLayout.NORTH);
         
@@ -50,16 +50,22 @@ class TelaVisitas extends JDialog {
         JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 5));
         
         JButton btnNova = new JButton("Nova Visita");
-        btnNova.setBackground(new Color(76, 175, 80));
-        btnNova.setForeground(Color.WHITE);
+        btnNova.setBackground(new Color(46, 125, 50));
+        btnNova.setForeground(new Color(51, 51, 51));
         btnNova.setFocusPainted(false);
+        btnNova.setFont(new Font("Arial", Font.BOLD, 12));
+        btnNova.setOpaque(true);
+        btnNova.setBorderPainted(false);
         btnNova.addActionListener(e -> novaVisita());
         painelBotoes.add(btnNova);
         
         JButton btnFechar = new JButton("Fechar");
         btnFechar.setBackground(new Color(96, 125, 139));
-        btnFechar.setForeground(Color.WHITE);
+        btnFechar.setForeground(new Color(51, 51, 51));
         btnFechar.setFocusPainted(false);
+        btnFechar.setFont(new Font("Arial", Font.BOLD, 12));
+        btnFechar.setOpaque(true);
+        btnFechar.setBorderPainted(false);
         btnFechar.addActionListener(e -> dispose());
         painelBotoes.add(btnFechar);
         

@@ -60,7 +60,7 @@ class DialogoNovaVisita extends JDialog {
         JButton btnSalvar = new JButton("Salvar");
         btnSalvar.setPreferredSize(new Dimension(100, 30));
         btnSalvar.setBackground(new Color(76, 175, 80));
-        btnSalvar.setForeground(Color.WHITE);
+        btnSalvar.setForeground(new Color(51, 51, 51));
         btnSalvar.setFocusPainted(false);
         btnSalvar.addActionListener(e -> salvar());
         painelBotoes.add(btnSalvar);
@@ -68,7 +68,7 @@ class DialogoNovaVisita extends JDialog {
         JButton btnCancelar = new JButton("Cancelar");
         btnCancelar.setPreferredSize(new Dimension(100, 30));
         btnCancelar.setBackground(new Color(158, 158, 158));
-        btnCancelar.setForeground(Color.WHITE);
+        btnCancelar.setForeground(new Color(51, 51, 51));
         btnCancelar.setFocusPainted(false);
         btnCancelar.addActionListener(e -> dispose());
         painelBotoes.add(btnCancelar);

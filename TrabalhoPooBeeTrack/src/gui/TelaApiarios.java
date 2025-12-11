@@ -39,7 +39,7 @@ public class TelaApiarios extends JDialog {
         
         JLabel lblTitulo = new JLabel("Gerenciamento de Apiários");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 20));
-        lblTitulo.setForeground(Color.WHITE);
+        lblTitulo.setForeground(new Color(51, 51, 51));
         painelHeader.add(lblTitulo);
         
         painelPrincipal.add(painelHeader, BorderLayout.NORTH);
@@ -101,7 +101,7 @@ public class TelaApiarios extends JDialog {
         JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 5));
         painelBotoes.setBackground(Color.WHITE);
         
-        btnNovo = criarBotao("Novo", new Color(76, 175, 80));
+        btnNovo = criarBotao("Novo", new Color(46, 125, 50));
         btnNovo.addActionListener(e -> novo());
         painelBotoes.add(btnNovo);
         
@@ -169,9 +169,11 @@ public class TelaApiarios extends JDialog {
         JButton btn = new JButton(texto);
         btn.setPreferredSize(new Dimension(90, 30));
         btn.setBackground(cor);
-        btn.setForeground(Color.WHITE);
+        btn.setForeground(new Color(51, 51, 51));
         btn.setFocusPainted(false);
         btn.setFont(new Font("Arial", Font.BOLD, 11));
+        btn.setOpaque(true);
+        btn.setBorderPainted(false);
         return btn;
     }
     

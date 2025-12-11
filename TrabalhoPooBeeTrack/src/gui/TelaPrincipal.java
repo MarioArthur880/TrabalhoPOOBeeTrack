@@ -12,14 +12,30 @@ public class TelaPrincipal extends JFrame {
     private ControleVisita controleVisita;
     private ControleMelDeTerceiros controleMelDeTerceiros;
     
+    // Repositórios compartilhados entre TODAS as instâncias de TelaPrincipal
+    private static RepositorioApiario repositorioApiarioCompartilhado;
+    private static RepositorioVisita repositorioVisitaCompartilhado;
+    private static RepositorioMelDeTerceiros repositorioMelCompartilhado;
+    
     public TelaPrincipal(Pessoa usuarioLogado, ControleUsuario controleUsuario) {
         this.usuarioLogado = usuarioLogado;
         this.controleUsuario = controleUsuario;
         
-        // Inicializa os demais controles
-        this.controleApiario = new ControleApiario(new RepositorioApiario());
-        this.controleVisita = new ControleVisita(new RepositorioVisita());
-        this.controleMelDeTerceiros = new ControleMelDeTerceiros(new RepositorioMelDeTerceiros());
+        // Inicializa os repositórios compartilhados apenas uma vez (na primeira execução)
+        if (repositorioApiarioCompartilhado == null) {
+            repositorioApiarioCompartilhado = new RepositorioApiario();
+        }
+        if (repositorioVisitaCompartilhado == null) {
+            repositorioVisitaCompartilhado = new RepositorioVisita();
+        }
+        if (repositorioMelCompartilhado == null) {
+            repositorioMelCompartilhado = new RepositorioMelDeTerceiros();
+        }
+        
+        // Usa os repositórios compartilhados para que todos os usuários vejam os mesmos dados
+        this.controleApiario = new ControleApiario(repositorioApiarioCompartilhado);
+        this.controleVisita = new ControleVisita(repositorioVisitaCompartilhado);
+        this.controleMelDeTerceiros = new ControleMelDeTerceiros(repositorioMelCompartilhado);
         
         inicializarComponentes();
     }
@@ -78,39 +94,70 @@ public class TelaPrincipal extends JFrame {
         gbc.weightx = 1.0;
         gbc.weighty = 1.0;
         
-        // Card Usuários (apenas para Admin)
         if (usuarioLogado.getTipoUsuario().equalsIgnoreCase("Admin")) {
+            // Layout para Admin: 2x2 (4 cards)
+            
+            // Card Usuários
             gbc.gridx = 0;
             gbc.gridy = 0;
             panel.add(criarCard("Gerenciar Usuários", 
                 "Cadastrar, editar e remover usuários do sistema", 
                 new Color(156, 39, 176),
                 e -> abrirTelaUsuarios()), gbc);
+            
+            // Card Apiários
+            gbc.gridx = 1;
+            gbc.gridy = 0;
+            panel.add(criarCard("Gerenciar Apiários", 
+                "Cadastrar e gerenciar apiários", 
+                new Color(255, 152, 0),
+                e -> abrirTelaApiarios()), gbc);
+            
+            // Card Visitas
+            gbc.gridx = 0;
+            gbc.gridy = 1;
+            panel.add(criarCard("Gerenciar Visitas", 
+                "Registrar visitas aos apiários", 
+                new Color(46, 125, 50),
+                e -> abrirTelaVisitas()), gbc);
+            
+            // Card Mel de Terceiros
+            gbc.gridx = 1;
+            gbc.gridy = 1;
+            panel.add(criarCard("Mel de Terceiros", 
+                "Gerenciar mel recebido de produtores", 
+                new Color(230, 160, 0),
+                e -> abrirTelaMelTerceiros()), gbc);
+        } else {
+            // Layout para Apicultor: 3 cards centralizados em formato triangular
+            
+            // Card Apiários (centro superior)
+            gbc.gridx = 0;
+            gbc.gridy = 0;
+            gbc.gridwidth = 2;
+            gbc.anchor = GridBagConstraints.CENTER;
+            panel.add(criarCard("Gerenciar Apiários", 
+                "Cadastrar e gerenciar apiários", 
+                new Color(255, 152, 0),
+                e -> abrirTelaApiarios()), gbc);
+            
+            // Card Visitas (esquerda inferior)
+            gbc.gridx = 0;
+            gbc.gridy = 1;
+            gbc.gridwidth = 1;
+            panel.add(criarCard("Gerenciar Visitas", 
+                "Registrar visitas aos apiários", 
+                new Color(46, 125, 50),
+                e -> abrirTelaVisitas()), gbc);
+            
+            // Card Mel de Terceiros (direita inferior)
+            gbc.gridx = 1;
+            gbc.gridy = 1;
+            panel.add(criarCard("Mel de Terceiros", 
+                "Gerenciar mel recebido de produtores", 
+                new Color(230, 160, 0),
+                e -> abrirTelaMelTerceiros()), gbc);
         }
-        
-        // Card Apiários
-        gbc.gridx = usuarioLogado.getTipoUsuario().equalsIgnoreCase("Admin") ? 1 : 0;
-        gbc.gridy = 0;
-        panel.add(criarCard("Gerenciar Apiários", 
-            "Cadastrar e gerenciar apiários", 
-            new Color(255, 152, 0),
-            e -> abrirTelaApiarios()), gbc);
-        
-        // Card Visitas
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        panel.add(criarCard("Gerenciar Visitas", 
-            "Registrar visitas aos apiários", 
-            new Color(76, 175, 80),
-            e -> abrirTelaVisitas()), gbc);
-        
-        // Card Mel de Terceiros
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        panel.add(criarCard("Mel de Terceiros", 
-            "Gerenciar mel recebido de produtores", 
-            new Color(255, 193, 7),
-            e -> abrirTelaMelTerceiros()), gbc);
         
         return panel;
     }
@@ -146,9 +193,11 @@ public class TelaPrincipal extends JFrame {
         // Botão
         JButton btnAcessar = new JButton("Acessar");
         btnAcessar.setBackground(cor);
-        btnAcessar.setForeground(Color.WHITE);
+        btnAcessar.setForeground(Color.BLACK);
         btnAcessar.setFocusPainted(false);
         btnAcessar.setFont(new Font("Arial", Font.BOLD, 12));
+        btnAcessar.setOpaque(true);
+        btnAcessar.setBorderPainted(false);
         btnAcessar.addActionListener(action);
         card.add(btnAcessar, BorderLayout.SOUTH);
         
@@ -178,9 +227,11 @@ public class TelaPrincipal extends JFrame {
         JButton btnLogout = new JButton("Sair");
         btnLogout.setPreferredSize(new Dimension(100, 35));
         btnLogout.setBackground(new Color(244, 67, 54));
-        btnLogout.setForeground(Color.WHITE);
+        btnLogout.setForeground(Color.BLACK);
         btnLogout.setFocusPainted(false);
         btnLogout.setFont(new Font("Arial", Font.BOLD, 12));
+        btnLogout.setOpaque(true);
+        btnLogout.setBorderPainted(false);
         btnLogout.addActionListener(e -> realizarLogout());
         panel.add(btnLogout);
         

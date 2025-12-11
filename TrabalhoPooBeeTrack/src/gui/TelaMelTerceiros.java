@@ -57,7 +57,7 @@ class TelaMelTerceiros extends JDialog {
         
         JButton btnFechar = new JButton("Fechar");
         btnFechar.setBackground(new Color(96, 125, 139));
-        btnFechar.setForeground(Color.WHITE);
+        btnFechar.setForeground(new Color(51, 51, 51));
         btnFechar.setFocusPainted(false);
         btnFechar.addActionListener(e -> dispose());
         painelBotoes.add(btnFechar);
