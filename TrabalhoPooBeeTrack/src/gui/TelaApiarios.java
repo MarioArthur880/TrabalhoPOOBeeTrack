@@ -97,18 +97,13 @@ public class TelaApiarios extends JDialog {
         
         JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 5));
         painelBotoes.setBackground(Color.WHITE);
-        
-        btnNovo = criarBotao("Novo", new Color(46, 125, 50));
-        btnNovo.addActionListener(e -> novo());
-        painelBotoes.add(btnNovo);
+
         
         btnSalvar = criarBotao("Salvar", new Color(33, 150, 243));
         btnSalvar.addActionListener(e -> salvar());
         painelBotoes.add(btnSalvar);
         
-        btnCancelar = criarBotao("Cancelar", new Color(158, 158, 158));
-        btnCancelar.addActionListener(e -> cancelar());
-        painelBotoes.add(btnCancelar);
+
         
         panel.add(painelBotoes, BorderLayout.SOUTH);
         
@@ -153,9 +148,7 @@ public class TelaApiarios extends JDialog {
         btnExcluir.addActionListener(e -> excluir());
         painelAcoes.add(btnExcluir);
         
-        JButton btnAtualizar = criarBotao("Atualizar", new Color(96, 125, 139));
-        btnAtualizar.addActionListener(e -> carregarDados());
-        painelAcoes.add(btnAtualizar);
+  
         
         panel.add(painelAcoes, BorderLayout.SOUTH);
         
