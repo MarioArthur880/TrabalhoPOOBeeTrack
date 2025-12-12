@@ -12,7 +12,6 @@ public class TelaPrincipal extends JFrame {
     private ControleVisita controleVisita;
     private ControleMelDeTerceiros controleMelDeTerceiros;
     
-    // Repositórios compartilhados entre TODAS as instâncias de TelaPrincipal
     private static RepositorioApiario repositorioApiarioCompartilhado;
     private static RepositorioVisita repositorioVisitaCompartilhado;
     private static RepositorioMelDeTerceiros repositorioMelCompartilhado;
@@ -21,7 +20,6 @@ public class TelaPrincipal extends JFrame {
         this.usuarioLogado = usuarioLogado;
         this.controleUsuario = controleUsuario;
         
-        // Inicializa os repositórios compartilhados apenas uma vez (na primeira execução)
         if (repositorioApiarioCompartilhado == null) {
             repositorioApiarioCompartilhado = new RepositorioApiario();
         }
@@ -32,7 +30,6 @@ public class TelaPrincipal extends JFrame {
             repositorioMelCompartilhado = new RepositorioMelDeTerceiros();
         }
         
-        // Usa os repositórios compartilhados para que todos os usuários vejam os mesmos dados
         this.controleApiario = new ControleApiario(repositorioApiarioCompartilhado);
         this.controleVisita = new ControleVisita(repositorioVisitaCompartilhado);
         this.controleMelDeTerceiros = new ControleMelDeTerceiros(repositorioMelCompartilhado);
@@ -46,20 +43,16 @@ public class TelaPrincipal extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         
-        // Panel principal
         JPanel painelPrincipal = new JPanel(new BorderLayout(10, 10));
         painelPrincipal.setBackground(new Color(245, 245, 245));
         painelPrincipal.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         
-        // Header
         JPanel painelHeader = criarHeader();
         painelPrincipal.add(painelHeader, BorderLayout.NORTH);
         
-        // Menu de cards
         JPanel painelCards = criarPainelCards();
         painelPrincipal.add(painelCards, BorderLayout.CENTER);
         
-        // Footer
         JPanel painelFooter = criarFooter();
         painelPrincipal.add(painelFooter, BorderLayout.SOUTH);
         
@@ -95,9 +88,6 @@ public class TelaPrincipal extends JFrame {
         gbc.weighty = 1.0;
         
         if (usuarioLogado.getTipoUsuario().equalsIgnoreCase("Admin")) {
-            // Layout para Admin: 2x2 (4 cards)
-            
-            // Card Usuários
             gbc.gridx = 0;
             gbc.gridy = 0;
             panel.add(criarCard("Gerenciar Usuários", 
@@ -105,7 +95,6 @@ public class TelaPrincipal extends JFrame {
                 new Color(156, 39, 176),
                 e -> abrirTelaUsuarios()), gbc);
             
-            // Card Apiários
             gbc.gridx = 1;
             gbc.gridy = 0;
             panel.add(criarCard("Gerenciar Apiários", 
@@ -113,7 +102,6 @@ public class TelaPrincipal extends JFrame {
                 new Color(255, 152, 0),
                 e -> abrirTelaApiarios()), gbc);
             
-            // Card Visitas
             gbc.gridx = 0;
             gbc.gridy = 1;
             panel.add(criarCard("Gerenciar Visitas", 
@@ -121,7 +109,6 @@ public class TelaPrincipal extends JFrame {
                 new Color(46, 125, 50),
                 e -> abrirTelaVisitas()), gbc);
             
-            // Card Mel de Terceiros
             gbc.gridx = 1;
             gbc.gridy = 1;
             panel.add(criarCard("Mel de Terceiros", 
@@ -129,9 +116,6 @@ public class TelaPrincipal extends JFrame {
                 new Color(230, 160, 0),
                 e -> abrirTelaMelTerceiros()), gbc);
         } else {
-            // Layout para Apicultor: 3 cards centralizados em formato triangular
-            
-            // Card Apiários (centro superior)
             gbc.gridx = 0;
             gbc.gridy = 0;
             gbc.gridwidth = 2;
@@ -141,7 +125,6 @@ public class TelaPrincipal extends JFrame {
                 new Color(255, 152, 0),
                 e -> abrirTelaApiarios()), gbc);
             
-            // Card Visitas (esquerda inferior)
             gbc.gridx = 0;
             gbc.gridy = 1;
             gbc.gridwidth = 1;
@@ -150,7 +133,6 @@ public class TelaPrincipal extends JFrame {
                 new Color(46, 125, 50),
                 e -> abrirTelaVisitas()), gbc);
             
-            // Card Mel de Terceiros (direita inferior)
             gbc.gridx = 1;
             gbc.gridy = 1;
             panel.add(criarCard("Mel de Terceiros", 
@@ -172,7 +154,6 @@ public class TelaPrincipal extends JFrame {
         card.setPreferredSize(new Dimension(300, 200));
         card.setCursor(new Cursor(Cursor.HAND_CURSOR));
         
-        // Header do card
         JPanel headerCard = new JPanel(new BorderLayout());
         headerCard.setBackground(cor);
         headerCard.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
@@ -184,13 +165,11 @@ public class TelaPrincipal extends JFrame {
         
         card.add(headerCard, BorderLayout.NORTH);
         
-        // Descrição
         JLabel lblDescricao = new JLabel("<html>" + descricao + "</html>");
         lblDescricao.setFont(new Font("Arial", Font.PLAIN, 12));
         lblDescricao.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         card.add(lblDescricao, BorderLayout.CENTER);
         
-        // Botão
         JButton btnAcessar = new JButton("Acessar");
         btnAcessar.setBackground(cor);
         btnAcessar.setForeground(Color.BLACK);
@@ -201,7 +180,6 @@ public class TelaPrincipal extends JFrame {
         btnAcessar.addActionListener(action);
         card.add(btnAcessar, BorderLayout.SOUTH);
         
-        // Efeito hover
         card.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 card.setBorder(BorderFactory.createCompoundBorder(

@@ -27,18 +27,15 @@ class DialogoCadastroAdmin extends JDialog {
         JPanel painelPrincipal = new JPanel(new BorderLayout(10, 10));
         painelPrincipal.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         
-        // Título
         JLabel lblTitulo = new JLabel("Primeiro Acesso - Cadastro de Administrador", SwingConstants.CENTER);
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 14));
         painelPrincipal.add(lblTitulo, BorderLayout.NORTH);
         
-        // Formulário
         JPanel painelForm = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(5, 5, 5, 5);
         
-        // Nome
         gbc.gridx = 0; gbc.gridy = 0; gbc.weightx = 0.3;
         painelForm.add(new JLabel("Nome:"), gbc);
         
@@ -46,7 +43,6 @@ class DialogoCadastroAdmin extends JDialog {
         gbc.gridx = 1; gbc.gridy = 0; gbc.weightx = 0.7;
         painelForm.add(txtNome, gbc);
         
-        // Email
         gbc.gridx = 0; gbc.gridy = 1; gbc.weightx = 0.3;
         painelForm.add(new JLabel("Email:"), gbc);
         
@@ -54,7 +50,6 @@ class DialogoCadastroAdmin extends JDialog {
         gbc.gridx = 1; gbc.gridy = 1; gbc.weightx = 0.7;
         painelForm.add(txtEmail, gbc);
         
-        // Senha
         gbc.gridx = 0; gbc.gridy = 2; gbc.weightx = 0.3;
         painelForm.add(new JLabel("Senha:"), gbc);
         
@@ -62,7 +57,6 @@ class DialogoCadastroAdmin extends JDialog {
         gbc.gridx = 1; gbc.gridy = 2; gbc.weightx = 0.7;
         painelForm.add(txtSenha, gbc);
         
-        // Confirmar Senha
         gbc.gridx = 0; gbc.gridy = 3; gbc.weightx = 0.3;
         painelForm.add(new JLabel("Confirmar Senha:"), gbc);
         
@@ -72,7 +66,6 @@ class DialogoCadastroAdmin extends JDialog {
         
         painelPrincipal.add(painelForm, BorderLayout.CENTER);
         
-        // Botões
         JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         
         JButton btnCadastrar = new JButton("Cadastrar");

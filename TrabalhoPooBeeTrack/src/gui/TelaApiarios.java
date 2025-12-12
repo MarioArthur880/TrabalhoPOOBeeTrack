@@ -1,6 +1,3 @@
-// ============================================
-// ARQUIVO: src/GUI/TelaApiarios.java
-// ============================================
 package gui;
 
 import controle.Apiario;

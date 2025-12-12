@@ -32,7 +32,7 @@ class TelaMelTerceiros extends JDialog {
         
         JLabel lblTitulo = new JLabel("Gerenciamento de Mel de Terceiros");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 20));
-        lblTitulo.setForeground(new Color(51, 51, 51)); // Texto escuro para fundo amarelo
+        lblTitulo.setForeground(new Color(51, 51, 51));
         painelHeader.add(lblTitulo);
         painelPrincipal.add(painelHeader, BorderLayout.NORTH);
         
@@ -49,7 +49,7 @@ class TelaMelTerceiros extends JDialog {
         
         JButton btnNovo = new JButton("Novo Registro");
         btnNovo.setBackground(new Color(255, 193, 7));
-        btnNovo.setForeground(new Color(51, 51, 51)); // Texto escuro
+        btnNovo.setForeground(new Color(51, 51, 51)); 
         btnNovo.setFocusPainted(false);
         btnNovo.setFont(new Font("Arial", Font.BOLD, 12));
         btnNovo.addActionListener(e -> novoRegistro());

@@ -25,19 +25,16 @@ public class TelaLogin extends JFrame {
         setLocationRelativeTo(null);
         setResizable(false);
         
-        // Panel principal com fundo
         JPanel painelPrincipal = new JPanel();
         painelPrincipal.setLayout(new BorderLayout(10, 10));
         painelPrincipal.setBackground(new Color(245, 245, 245));
         painelPrincipal.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         
-        // Título
         JLabel lblTitulo = new JLabel("Sistema de Gerenciamento de Apiários", SwingConstants.CENTER);
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 16));
         lblTitulo.setForeground(new Color(51, 51, 51));
         painelPrincipal.add(lblTitulo, BorderLayout.NORTH);
         
-        // Panel central com formulário
         JPanel painelFormulario = new JPanel(new GridBagLayout());
         painelFormulario.setBackground(Color.WHITE);
         painelFormulario.setBorder(BorderFactory.createCompoundBorder(
@@ -49,7 +46,6 @@ public class TelaLogin extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(5, 5, 5, 5);
         
-        // Email
         JLabel lblEmail = new JLabel("Email:");
         lblEmail.setFont(new Font("Arial", Font.PLAIN, 12));
         gbc.gridx = 0;
@@ -65,7 +61,6 @@ public class TelaLogin extends JFrame {
         gbc.weightx = 0.7;
         painelFormulario.add(txtEmail, gbc);
         
-        // Senha
         JLabel lblSenha = new JLabel("Senha:");
         lblSenha.setFont(new Font("Arial", Font.PLAIN, 12));
         gbc.gridx = 0;
@@ -83,7 +78,6 @@ public class TelaLogin extends JFrame {
         
         painelPrincipal.add(painelFormulario, BorderLayout.CENTER);
         
-        // Panel de botões
         JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         painelBotoes.setBackground(new Color(245, 245, 245));
         
@@ -98,7 +92,6 @@ public class TelaLogin extends JFrame {
         btnLogin.addActionListener(e -> realizarLogin());
         painelBotoes.add(btnLogin);
 
-        // Botão de cadastro só aparece se não houver usuários
         if (controleUsuario.listar().isEmpty()) {
             btnCadastrar = new JButton("Cadastrar Admin");
             btnCadastrar.setPreferredSize(new Dimension(140, 35));
@@ -116,7 +109,6 @@ public class TelaLogin extends JFrame {
         
         add(painelPrincipal);
         
-        // Enter no campo senha faz login
         txtSenha.addActionListener(e -> realizarLogin());
     }
     
@@ -150,7 +142,6 @@ public class TelaLogin extends JFrame {
                 "Login Realizado", 
                 JOptionPane.INFORMATION_MESSAGE);
             
-            // Abre a tela principal
             SwingUtilities.invokeLater(() -> {
                 TelaPrincipal telaPrincipal = new TelaPrincipal(usuario, controleUsuario);
                 telaPrincipal.setVisible(true);
@@ -170,7 +161,6 @@ public class TelaLogin extends JFrame {
         DialogoCadastroAdmin dialogo = new DialogoCadastroAdmin(this, controleUsuario);
         dialogo.setVisible(true);
         
-        // Atualiza a interface após cadastro
         if (!controleUsuario.listar().isEmpty() && btnCadastrar != null) {
             btnCadastrar.setVisible(false);
         }

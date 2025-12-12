@@ -3,9 +3,6 @@ package controle;
 import repositorio.RepositorioUsuario;
 import java.util.List;
 
-/**
- * Classe de controle para gerenciamento de usuarios com validacoes
- */
 public class ControleUsuario {
     private RepositorioUsuario repositorio;
     private String ultimaMensagemErro;
